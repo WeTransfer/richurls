@@ -6,7 +6,7 @@ require_relative 'parsers/description_parser'
 require_relative 'parsers/image_parser'
 require_relative 'parsers/embed_parser'
 
-class RichUrls
+module RichUrls
   class BodyDecorator
     NoXMLError = Class.new(StandardError)
 

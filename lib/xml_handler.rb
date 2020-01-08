@@ -1,4 +1,4 @@
-class RichUrls
+module RichUrls
   class XMLHandler < ::Ox::Sax
     WHITELISTED_EL_NAMES = %i(
       html

@@ -1,6 +1,6 @@
 require 'patron'
 
-class RichUrls
+module RichUrls
   class UrlFetcher
     DEFAULT_TIMEOUT = 10 # seconds
     CACHE_TIME = 60 * 60 # 1 hour
