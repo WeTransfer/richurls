@@ -13,5 +13,7 @@ RSpec.describe RichUrls do
     expect(enriched).to have_key('description')
     expect(enriched).to have_key('embed')
     expect(enriched).to have_key('image')
+    expect(enriched).to have_key('provider_display')
+    expect(enriched).to have_key('favicon')
   end
 end
