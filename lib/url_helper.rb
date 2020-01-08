@@ -4,11 +4,12 @@ module UrlHelper
     return url if url =~ URI::DEFAULT_PARSER.make_regexp
 
     uri = URI(domain)
+    base = uri.scheme + '://' + uri.host
 
     if url.start_with?('/')
-      uri.scheme + '://' + uri.host + url
+      base + url
     else
-      uri.scheme + '://' + uri.host + uri.path + '/' + url
+      base + uri.path + '/' + url
     end
   end
 end
