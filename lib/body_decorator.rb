@@ -5,6 +5,7 @@ require_relative 'parsers/title_parser'
 require_relative 'parsers/description_parser'
 require_relative 'parsers/image_parser'
 require_relative 'parsers/embed_parser'
+require_relative 'parsers/provider_display_parser'
 
 module RichUrls
   class BodyDecorator
@@ -14,6 +15,7 @@ module RichUrls
       'title' => Parsers::TitleParser,
       'description' => Parsers::DescriptionParser,
       'image' => Parsers::ImageParser,
+      'provider_display' => Parsers::ProviderDisplayParser,
       'embed' => Parsers::EmbedParser
     }.freeze
 

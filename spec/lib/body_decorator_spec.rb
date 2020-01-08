@@ -3,6 +3,31 @@ require 'spec_helper'
 RSpec.describe RichUrls::BodyDecorator do
   let(:url) { 'https://body.com' }
 
+  describe 'provider display decorator' do
+    let(:file) { File.read('./spec/fixtures/title_only.html') }
+
+    it 'adds a provider display - removes path' do
+      decorator = RichUrls::BodyDecorator.new('https://wetransfer.com/test', file)
+      result = decorator.decorate
+
+      expect(result['provider_display']).to eq('https://wetransfer.com')
+    end
+
+    it 'adds a provider display - strips of params' do
+      decorator = RichUrls::BodyDecorator.new('https://wetransfer.com/test?params=1', file)
+      result = decorator.decorate
+
+      expect(result['provider_display']).to eq('https://wetransfer.com')
+    end
+
+    it 'adds a provider display - keeps www' do
+      decorator = RichUrls::BodyDecorator.new('https://www.wetransfer.com/test?params=1', file)
+      result = decorator.decorate
+
+      expect(result['provider_display']).to eq('https://www.wetransfer.com')
+    end
+  end
+
   describe 'title decorator' do
     it 'decorates a html body' do
       file = File.read('./spec/fixtures/title_only.html')
