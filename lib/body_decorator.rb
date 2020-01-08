@@ -1,11 +1,13 @@
 require 'ox'
 
 require_relative 'xml_handler'
+require_relative 'url_helper'
 require_relative 'parsers/title_parser'
 require_relative 'parsers/description_parser'
 require_relative 'parsers/image_parser'
 require_relative 'parsers/embed_parser'
 require_relative 'parsers/provider_display_parser'
+require_relative 'parsers/favicon_parser'
 
 module RichUrls
   class BodyDecorator
@@ -16,6 +18,7 @@ module RichUrls
       'description' => Parsers::DescriptionParser,
       'image' => Parsers::ImageParser,
       'provider_display' => Parsers::ProviderDisplayParser,
+      'favicon' => Parsers::FaviconParser,
       'embed' => Parsers::EmbedParser
     }.freeze
 

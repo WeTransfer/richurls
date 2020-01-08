@@ -5,6 +5,7 @@ module RichUrls
       head
       title
       meta
+      link
       img
     ).freeze
 

@@ -111,4 +111,33 @@ RSpec.describe RichUrls::BodyDecorator do
       )
     end
   end
+
+  describe 'favicon decorator' do
+    it 'adds the non-relative url' do
+      file = File.read('./spec/fixtures/favicon.html')
+      decorator = RichUrls::BodyDecorator.new(url, file)
+      result = decorator.decorate
+
+      expect(result['favicon']).to eq('https://cats-are-god.com/cats.ico')
+    end
+
+    it 'adds the relative url' do
+      file = File.read('./spec/fixtures/favicon_relative.html')
+      decorator = RichUrls::BodyDecorator.new(
+        'https://body.com/123/abc?params=xyz',
+        file
+      )
+      result = decorator.decorate
+
+      expect(result['favicon']).to eq('https://body.com/cats.ico')
+    end
+
+    it 'adds the relative url' do
+      file = File.read('./spec/fixtures/favicon_relative.html')
+      decorator = RichUrls::BodyDecorator.new(url, file)
+      result = decorator.decorate
+
+      expect(result['favicon']).to eq('https://body.com/cats.ico')
+    end
+  end
 end
