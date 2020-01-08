@@ -7,21 +7,30 @@ RSpec.describe RichUrls::BodyDecorator do
     let(:file) { File.read('./spec/fixtures/title_only.html') }
 
     it 'adds a provider display - removes path' do
-      decorator = RichUrls::BodyDecorator.new('https://wetransfer.com/test', file)
+      decorator = RichUrls::BodyDecorator.new(
+        'https://wetransfer.com/test',
+        file
+      )
       result = decorator.decorate
 
       expect(result['provider_display']).to eq('https://wetransfer.com')
     end
 
     it 'adds a provider display - strips of params' do
-      decorator = RichUrls::BodyDecorator.new('https://wetransfer.com/test?params=1', file)
+      decorator = RichUrls::BodyDecorator.new(
+        'https://wetransfer.com/test?params=1',
+        file
+      )
       result = decorator.decorate
 
       expect(result['provider_display']).to eq('https://wetransfer.com')
     end
 
     it 'adds a provider display - keeps www' do
-      decorator = RichUrls::BodyDecorator.new('https://www.wetransfer.com/test?params=1', file)
+      decorator = RichUrls::BodyDecorator.new(
+        'https://www.wetransfer.com/test?params=1',
+        file
+      )
       result = decorator.decorate
 
       expect(result['provider_display']).to eq('https://www.wetransfer.com')
@@ -94,7 +103,10 @@ RSpec.describe RichUrls::BodyDecorator do
       result = decorator.decorate
 
       expect(result['embed']).to eq(
-        '<iframe width="560" height="315" src="https://www.youtube.com/embedONYyFiKjJ20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+        '<iframe width="560" height="315" '\
+        'src="https://www.youtube.com/embedONYyFiKjJ20" frameborder="0" '\
+        'allow="accelerometer; autoplay; encrypted-media; gyroscope; '\
+        'picture-in-picture" allowfullscreen></iframe>'
       )
     end
 
@@ -107,7 +119,9 @@ RSpec.describe RichUrls::BodyDecorator do
       result = decorator.decorate
 
       expect(result['embed']).to eq(
-        '<iframe src="https://pasteapp.com/p/jbYfTeB8726/embed?view=xhund8bMW4W" width="480" height="480" scrolling="no" frameborder="0" allowfullscreen></iframe>'
+        '<iframe src="https://pasteapp.com/p/jbYfTeB8726/embed?view=xhund8bMW4W" '\
+        'width="480" height="480" scrolling="no" frameborder="0" '\
+        'allowfullscreen></iframe>'
       )
     end
   end

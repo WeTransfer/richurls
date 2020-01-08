@@ -1,0 +1,23 @@
+Lint/AssignmentInCondition:
+  Exclude:
+    - 'spec/**/*.rb'
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - '*.gemspec'
+Style/Documentation:
+  Enabled: false
+# This is causing breaking changes:
+Style/ExpandPathArguments:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/RegexpLiteral:
+  Enabled: false
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*.rb'
+Metrics/MethodLength:
+  Enabled: false

@@ -5,7 +5,7 @@ require 'ox'
 Ox.default_options = {
   mode: :generic,
   effort: :tolerant,
-  smart:  true
+  smart: true
 }
 
 body = File.read('fixtures/youtube_video.html')

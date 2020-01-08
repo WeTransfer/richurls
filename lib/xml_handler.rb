@@ -1,13 +1,13 @@
 module RichUrls
   class XMLHandler < ::Ox::Sax
-    WHITELISTED_EL_NAMES = %i(
+    WHITELISTED_EL_NAMES = %i[
       html
       head
       title
       meta
       link
       img
-    ).freeze
+    ].freeze
 
     El = Struct.new(:name, :attributes)
 

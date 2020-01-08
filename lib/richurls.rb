@@ -10,7 +10,7 @@ module RichUrls
   class MalformedURLError < StandardError; end
 
   def self.enrich(url)
-    unless url =~ URI::DEFAULT_PARSER.make_regexp
+    unless URI::DEFAULT_PARSER.make_regexp.match?(url)
       raise MalformedURLError, "this url is malformed: #{url}"
     end
 
