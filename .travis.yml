@@ -1,0 +1,22 @@
+language: ruby
+rvm:
+- 2.7.0
+
+services:
+- redis
+
+dist: xenial
+
+cache: bundler
+
+jobs:
+  include:
+    - stage: Tests
+      name: General tests
+      script:
+        - bundle exec rspec
+
+    - stage: Tests
+      name: Rubocop
+      script:
+        - bundle exec rubocop
