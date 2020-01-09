@@ -92,41 +92,6 @@ RSpec.describe RichUrls::BodyDecorator do
     end
   end
 
-  describe 'embed decorator' do
-    it 'fetches the embed code from a page like Youtube' do
-      file = File.read('./spec/fixtures/youtube_video.html')
-      decorator = RichUrls::BodyDecorator.new(
-        'https://www.youtube.com/watch?v=ONYyFiKjJ20',
-        file
-      )
-
-      result = decorator.decorate
-
-      expect(result['embed']).to eq(
-        '<iframe width="560" height="315" '\
-        'src="https://www.youtube.com/embedONYyFiKjJ20" frameborder="0" '\
-        'allow="accelerometer; autoplay; encrypted-media; gyroscope; '\
-        'picture-in-picture" allowfullscreen></iframe>'
-      )
-    end
-
-    it 'fetches the embed code from a page like Paste' do
-      file = File.read('./spec/fixtures/paste_slideshow.html')
-      decorator = RichUrls::BodyDecorator.new(
-        'https://pasteapp.com/p/jbYfTeB8726?view=xhund8bMW4W',
-        file
-      )
-      result = decorator.decorate
-
-      expect(result['embed']).to eq(
-        '<iframe '\
-        'src="https://pasteapp.com/p/jbYfTeB8726/embed?view=xhund8bMW4W" '\
-        'width="480" height="480" scrolling="no" frameborder="0" '\
-        'allowfullscreen></iframe>'
-      )
-    end
-  end
-
   describe 'favicon decorator' do
     it 'adds the non-relative url' do
       file = File.read('./spec/fixtures/favicon.html')
