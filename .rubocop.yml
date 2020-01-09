@@ -5,6 +5,8 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
     - '*.gemspec'
+Style/FormatString:
+  Enabled: false
 Style/Documentation:
   Enabled: false
 # This is causing breaking changes:

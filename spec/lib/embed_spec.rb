@@ -52,9 +52,9 @@ RSpec.describe Parsers::EmbedParser do
 
         it 'fetches the correct embed code' do
           expect(result).to eq(
-            '<iframe '\
-            'src="https://open.spotify.com/embed/track/40JHx9UKFZTPKrA9a3ScaG" '\
-            'width="300" height="380" frameborder="0" allowtransparency="true" '\
+            '<iframe src="https://open.spotify.com/embed/track/'\
+            '40JHx9UKFZTPKrA9a3ScaG" width="300" height="380" '\
+            'frameborder="0" allowtransparency="true" '\
             'allow="encrypted-media"></iframe>'
           )
         end
@@ -68,9 +68,9 @@ RSpec.describe Parsers::EmbedParser do
 
         it 'fetches the correct embed code' do
           expect(result).to eq(
-            '<iframe '\
-            'src="https://open.spotify.com/embed/album/1MrqY9fdmJFExV6cWhxgQ6" '\
-            'width="300" height="380" frameborder="0" allowtransparency="true" '\
+            '<iframe src="https://open.spotify.com/embed/album/' \
+            '1MrqY9fdmJFExV6cWhxgQ6" width="300" height="380" '\
+            'frameborder="0" allowtransparency="true" '\
             'allow="encrypted-media"></iframe>'
           )
         end
@@ -84,9 +84,9 @@ RSpec.describe Parsers::EmbedParser do
 
         it 'fetches the correct embed code' do
           expect(result).to eq(
-            '<iframe '\
-            'src="https://open.spotify.com/embed/album/1MrqY9fdmJFExV6cWhxgQ6" '\
-            'width="300" height="380" frameborder="0" allowtransparency="true" '\
+            '<iframe src="https://open.spotify.com/embed/playlist'\
+            '/7cHfzO6YdgHMy9tVOEGb3J" width="300" height="380" '\
+            'frameborder="0" allowtransparency="true" '\
             'allow="encrypted-media"></iframe>'
           )
         end

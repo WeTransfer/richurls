@@ -10,7 +10,7 @@ module Parsers
       def match?
         @uri.host == 'www.youtube.com' &&
           @uri.path == '/watch' &&
-          query.has_key?('v')
+          query.key?('v')
       end
 
       def parse

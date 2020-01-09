@@ -19,10 +19,7 @@ module Parsers
       PARSERS.each do |parser|
         embed_parser = parser.new(uri)
 
-        if embed_parser.match?
-          return embed_parser.parse
-          break
-        end
+        return embed_parser.parse if embed_parser.match?
       end
 
       nil
