@@ -42,5 +42,63 @@ RSpec.describe Parsers::EmbedParser do
         )
       end
     end
+
+    context 'spotify' do
+      context 'a track' do
+        let(:url) {
+          'https://open.spotify.com/track/' \
+          '40JHx9UKFZTPKrA9a3ScaG?si=1GJj3YzESxyz8-27tQ9KdQ'
+        }
+
+        it 'fetches the correct embed code' do
+          expect(result).to eq(
+            '<iframe '\
+            'src="https://open.spotify.com/embed/track/40JHx9UKFZTPKrA9a3ScaG" '\
+            'width="300" height="380" frameborder="0" allowtransparency="true" '\
+            'allow="encrypted-media"></iframe>'
+          )
+        end
+      end
+
+      context 'an album' do
+        let(:url) {
+          'https://open.spotify.com/album/' \
+          '1MrqY9fdmJFExV6cWhxgQ6?si=KvHon650TW24sXCXuFw1WA'
+        }
+
+        it 'fetches the correct embed code' do
+          expect(result).to eq(
+            '<iframe '\
+            'src="https://open.spotify.com/embed/album/1MrqY9fdmJFExV6cWhxgQ6" '\
+            'width="300" height="380" frameborder="0" allowtransparency="true" '\
+            'allow="encrypted-media"></iframe>'
+          )
+        end
+      end
+
+      context 'a playlist' do
+        let(:url) {
+          'https://open.spotify.com/playlist/' \
+          '7cHfzO6YdgHMy9tVOEGb3J?si=S5bfYRLDSZapgjGdfNsW6w'
+        }
+
+        it 'fetches the correct embed code' do
+          expect(result).to eq(
+            '<iframe '\
+            'src="https://open.spotify.com/embed/album/1MrqY9fdmJFExV6cWhxgQ6" '\
+            'width="300" height="380" frameborder="0" allowtransparency="true" '\
+            'allow="encrypted-media"></iframe>'
+          )
+        end
+      end
+    end
+
+    # Out of scope. Soundcloud's URL's can't be easily transformed into
+    # an iframe because of the way this is currently setup at Soundcloud's end.
+    context 'soundcloud'
+
+    # Out of scope. Twitter URL's can't be easily transformed into
+    # an iframe because of the way it's currently setup at Twitter's end
+    context 'twitter'
   end
 end
