@@ -12,7 +12,7 @@ module Parsers
       # Into:
       #   https://www.youtube.com/embed/ONYyFiKjJ20
       def embed_url_for
-        @url.sub(/watch\?v=/, 'embed')
+        @url.sub(/watch\?v=/, 'embed/')
       end
     end
   end
