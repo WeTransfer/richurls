@@ -119,7 +119,8 @@ RSpec.describe RichUrls::BodyDecorator do
       result = decorator.decorate
 
       expect(result['embed']).to eq(
-        '<iframe src="https://pasteapp.com/p/jbYfTeB8726/embed?view=xhund8bMW4W" '\
+        '<iframe '\
+        'src="https://pasteapp.com/p/jbYfTeB8726/embed?view=xhund8bMW4W" '\
         'width="480" height="480" scrolling="no" frameborder="0" '\
         'allowfullscreen></iframe>'
       )
