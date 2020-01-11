@@ -22,21 +22,21 @@ RSpec.describe UrlHelper do
 
   it 'should prepend the domain' do
     url = UrlHelper.url_for(
-      'https://should_not_be_in_the_spec.com/path?q=1', '/test.jpg'
+      'https://should_be_in_the_spec.com/path?q=1', '/test.jpg'
     )
 
     expect(url).to eq(
-      'https://should_not_be_in_the_spec.com/test.jpg'
+      'https://should_be_in_the_spec.com/test.jpg'
     )
   end
 
   it 'should prepend the domain and the path' do
     url = UrlHelper.url_for(
-      'https://should_not_be_in_the_spec.com/test?q=5', 'test.jpg'
+      'https://should_be_in_the_spec.com/test?q=5', 'test.jpg'
     )
 
     expect(url).to eq(
-      'https://should_not_be_in_the_spec.com/test/test.jpg'
+      'https://should_be_in_the_spec.com/test/test.jpg'
     )
   end
 end
