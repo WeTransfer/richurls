@@ -14,6 +14,6 @@ module UrlHelper
   end
 
   def self.valid_url?(url)
-    url.start_with?('//') || url =~ URI.regexp
+    url.start_with?('//') || url =~ URI::DEFAULT_PARSER.make_regexp
   end
 end
