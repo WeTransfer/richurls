@@ -1,7 +1,3 @@
 module Parsers
-  ProviderDisplayParser = lambda do |_, url|
-    uri = URI(url)
-
-    uri.scheme + '://' + uri.host
-  end
+  ProviderDisplayParser = ->(_, url) { URI(url).host }
 end

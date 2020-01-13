@@ -13,7 +13,7 @@ RSpec.describe RichUrls::BodyDecorator do
       )
       result = decorator.decorate
 
-      expect(result['provider_display']).to eq('https://wetransfer.com')
+      expect(result['provider_display']).to eq('wetransfer.com')
     end
 
     it 'adds a provider display - strips of params' do
@@ -23,7 +23,7 @@ RSpec.describe RichUrls::BodyDecorator do
       )
       result = decorator.decorate
 
-      expect(result['provider_display']).to eq('https://wetransfer.com')
+      expect(result['provider_display']).to eq('wetransfer.com')
     end
 
     it 'adds a provider display - keeps www' do
@@ -33,7 +33,7 @@ RSpec.describe RichUrls::BodyDecorator do
       )
       result = decorator.decorate
 
-      expect(result['provider_display']).to eq('https://www.wetransfer.com')
+      expect(result['provider_display']).to eq('www.wetransfer.com')
     end
   end
 
