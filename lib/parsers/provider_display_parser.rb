@@ -1,3 +1,3 @@
 module Parsers
-  ProviderDisplayParser = -> (_, url) { URI(url).host }
+  ProviderDisplayParser = ->(_, url) { URI(url).host }
 end
