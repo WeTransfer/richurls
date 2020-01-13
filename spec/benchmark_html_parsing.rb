@@ -78,7 +78,7 @@ Benchmark.ips do |x|
     handler.find(:title).attributes['text']
   end
 
-  x.report('ox html parsing (experimental)' ) do
+  x.report('ox html parsing (experimental)') do
     handler = ExperimentalXMLHandler.new
     Ox.sax_html(handler, StringIO.new(body))
     handler.find(:title).attributes['text']
