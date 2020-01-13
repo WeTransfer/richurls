@@ -23,45 +23,38 @@ Benchmark.ips do |x|
   x.report('nokogiri html parsing') do
     doc = Nokogiri::HTML(body)
     title = doc.at_css('title').content
-    unless title == answer
-      raise "wrong title: #{title.inspect}"
-    end
+
+    raise "wrong title: #{title.inspect}" unless title == answer
   end
 
   x.report('oga html parsing') do
     parsed = Oga.parse_xml(body)
     title = parsed.css('title').text
 
-    unless title == answer
-      raise "wrong title: #{title.inspect}"
-    end
+    raise "wrong title: #{title.inspect}" unless title == answer
   end
 
   x.report('hpricot html parsing') do
     parsed = Hpricot(body)
     title = parsed.at('title').inner_html
 
-    unless title == answer
-      raise "wrong title: #{title.inspect}"
-    end
+    raise "wrong title: #{title.inspect}" unless title == answer
   end
 
   x.report('ox html parsing') do
     handler = RichUrls::XMLHandler.new
     Ox.sax_html(handler, StringIO.new(body))
     title = handler.find(:title).attributes[:text]
-    unless title == answer
-      raise "wrong title: #{title.inspect}"
-    end
+
+    raise "wrong title: #{title.inspect}" unless title == answer
   end
 
   x.report('ox html parsing (experimental)') do
     handler = ExperimentalXMLHandler.new
     Ox.sax_html(handler, StringIO.new(body))
     title = handler.find(:title).attributes[:text]
-    unless title == answer
-      raise "wrong title: #{title.inspect}"
-    end
+
+    raise "wrong title: #{title.inspect}" unless title == answer
   end
 
   x.compare!
