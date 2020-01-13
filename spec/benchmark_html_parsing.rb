@@ -10,6 +10,23 @@ require 'xml'
 require_relative '../lib/xml_handler'
 require_relative './experimental_xml_handler'
 
+class OgaXMLHandler
+  attr_reader :elements
+
+  def initialize
+    @elements = []
+  end
+
+  def on_element(namespace, name, attrs = {})
+    @elements << { name: name }.merge(attrs)
+  end
+
+  def on_text(text)
+    el = @elements.last
+    el && el[:text] = text
+  end
+end
+
 Ox.default_options = {
   mode: :generic,
   effort: :tolerant,
@@ -30,6 +47,14 @@ Benchmark.ips do |x|
   x.report('oga html parsing') do
     parsed = Oga.parse_xml(body)
     title = parsed.css('title').text
+
+    raise "wrong title: #{title.inspect}" unless title == answer
+  end
+
+  x.report('oga sax html parsing') do
+    handler = OgaXMLHandler.new
+    parsed = Oga.sax_parse_xml(handler, body)
+    title = handler.elements.detect{|t| t[:name] == 'title' }[:text]
 
     raise "wrong title: #{title.inspect}" unless title == answer
   end
