@@ -1,7 +1,31 @@
 require 'benchmark/ips'
+require 'pry'
 require 'nokogiri'
 require 'ox'
+require 'oga'
+require 'hpricot'
+require 'libxml' # LibXML parsing doesn't seem to do the trick
+require 'xml'
+
 require_relative '../lib/xml_handler'
+require_relative './experimental_xml_handler'
+
+class OgaXMLHandler
+  attr_reader :elements
+
+  def initialize
+    @elements = []
+  end
+
+  def on_element(_, name, attrs = {})
+    @elements << { name: name }.merge(attrs)
+  end
+
+  def on_text(text)
+    el = @elements.last
+    el && el[:text] = text
+  end
+end
 
 Ox.default_options = {
   mode: :generic,
@@ -9,79 +33,53 @@ Ox.default_options = {
   smart: true
 }
 
-class ExperimentalXMLHandler < ::Ox::Sax
-  WHITELISTED_EL_NAMES = %i[
-    html
-    head
-    title
-    meta
-    link
-    img
-  ].freeze
-
-  WHITELISTED_ATTRS = %i[
-    property
-    content
-    rel
-    href
-    src
-  ].freeze
-
-  El = Struct.new(:name, :attributes)
-
-  attr_accessor :elements
-
-  def initialize
-    @elements = []
-  end
-
-  def find(name, attributes = {})
-    @elements.detect do |el|
-      matching_attributes = attributes.all? do |key, val|
-        el.attributes[key] == val
-      end
-
-      el.name == name && matching_attributes
-    end
-  end
-
-  def start_element(element_name)
-    return unless WHITELISTED_EL_NAMES.include?(element_name)
-
-    @elements << El.new(element_name, {})
-  end
-
-  def attr(name, str)
-    return unless WHITELISTED_ATTRS.include?(name)
-
-    el = @elements.last
-    el.attributes[name] = str
-  end
-
-  def text(str)
-    el = @elements.last
-    el && el.attributes[:text].nil? && el.attributes[:text] = str
-  end
-end
-
 body = File.read('fixtures/youtube_video.html')
+answer = 'My Indiana Jones Movies - Hilariocity Review - YouTube'
 
 Benchmark.ips do |x|
   x.report('nokogiri html parsing') do
     doc = Nokogiri::HTML(body)
-    doc.at_css('title').content
+    title = doc.at_css('title').content
+
+    raise "wrong title: #{title.inspect}" unless title == answer
+  end
+
+  x.report('oga html parsing') do
+    parsed = Oga.parse_xml(body)
+    title = parsed.css('title').text
+
+    raise "wrong title: #{title.inspect}" unless title == answer
+  end
+
+  x.report('oga sax html parsing') do
+    handler = OgaXMLHandler.new
+    Oga.sax_parse_xml(handler, body)
+    title = handler.elements.detect { |t| t[:name] == 'title' }[:text]
+
+    raise "wrong title: #{title.inspect}" unless title == answer
+  end
+
+  x.report('hpricot html parsing') do
+    parsed = Hpricot(body)
+    title = parsed.at('title').inner_html
+
+    raise "wrong title: #{title.inspect}" unless title == answer
   end
 
   x.report('ox html parsing') do
     handler = RichUrls::XMLHandler.new
     Ox.sax_html(handler, StringIO.new(body))
-    handler.find(:title).attributes['text']
+    title = handler.find(:title).attributes[:text]
+
+    raise "wrong title: #{title.inspect}" unless title == answer
   end
 
   x.report('ox html parsing (experimental)') do
     handler = ExperimentalXMLHandler.new
     Ox.sax_html(handler, StringIO.new(body))
-    handler.find(:title).attributes['text']
+    title = handler.find(:title).attributes[:text]
+
+    raise "wrong title: #{title.inspect}" unless title == answer
   end
 
   x.compare!
