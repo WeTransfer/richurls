@@ -17,7 +17,7 @@ class OgaXMLHandler
     @elements = []
   end
 
-  def on_element(namespace, name, attrs = {})
+  def on_element(_, name, attrs = {})
     @elements << { name: name }.merge(attrs)
   end
 
@@ -53,8 +53,8 @@ Benchmark.ips do |x|
 
   x.report('oga sax html parsing') do
     handler = OgaXMLHandler.new
-    parsed = Oga.sax_parse_xml(handler, body)
-    title = handler.elements.detect{|t| t[:name] == 'title' }[:text]
+    Oga.sax_parse_xml(handler, body)
+    title = handler.elements.detect { |t| t[:name] == 'title' }[:text]
 
     raise "wrong title: #{title.inspect}" unless title == answer
   end
