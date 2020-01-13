@@ -22,21 +22,21 @@ RSpec.describe RichUrls::UrlFetcher do
   end
 
   it 'sets values to redis' do
-    fetcher = RichUrls::UrlFetcher.fetch(url)
+    RichUrls::UrlFetcher.fetch(url)
     key = Digest::MD5.hexdigest(url)
 
     expect(redis.get(key)).to_not be_empty
   end
 
   it 'elongates the ttl if the redis key is called again' do
-    fetcher = RichUrls::UrlFetcher.fetch(url)
+    RichUrls::UrlFetcher.fetch(url)
     key = Digest::MD5.hexdigest(url)
 
     expect(redis.ttl(key)).to eq(3600)
     sleep 1
     expect(redis.ttl(key)).to eq(3599)
 
-    fetcher = RichUrls::UrlFetcher.fetch(url)
+    RichUrls::UrlFetcher.fetch(url)
     expect(redis.ttl(key)).to eq(3600)
   end
 end
