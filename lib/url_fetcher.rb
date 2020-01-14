@@ -20,7 +20,12 @@ module RichUrls
     def fetch
       cached = redis.get(digest)
 
-      (cached && Oj.load(cached)) || patron_call
+      if cached
+        redis.expire(digest, CACHE_TIME)
+        Oj.load(cached)
+      else
+        patron_call
+      end
     end
 
     private
