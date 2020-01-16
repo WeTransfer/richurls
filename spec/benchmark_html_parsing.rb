@@ -67,25 +67,21 @@ Benchmark.ips do |x|
   end
 
   x.report('ox html parsing') do
-    begin
-      handler = RichUrls::XMLHandler.new
-      Ox.sax_html(handler, StringIO.new(body))
-      title = handler.find(:title).attributes[:text]
+    handler = RichUrls::XMLHandler.new
+    Ox.sax_html(handler, StringIO.new(body))
+    title = handler.find(:title).attributes[:text]
 
-      raise "wrong title: #{title.inspect}" unless title == answer
-    rescue RichUrls::XMLHandler::StopParsingError
-    end
+    raise "wrong title: #{title.inspect}" unless title == answer
+  rescue RichUrls::XMLHandler::StopParsingError
   end
 
   x.report('ox html parsing (experimental)') do
-    begin
-      handler = ExperimentalXMLHandler.new
-      Ox.sax_html(handler, StringIO.new(body))
-      title = handler.find(:title).attributes[:text]
+    handler = ExperimentalXMLHandler.new
+    Ox.sax_html(handler, StringIO.new(body))
+    title = handler.find(:title).attributes[:text]
 
-      raise "wrong title: #{title.inspect}" unless title == answer
-    rescue StandardError
-    end
+    raise "wrong title: #{title.inspect}" unless title == answer
+  rescue StandardError
   end
 
   x.compare!

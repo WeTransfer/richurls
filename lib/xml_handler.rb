@@ -48,9 +48,7 @@ module RichUrls
       el = @elements.last
       el.attributes[name] = str
 
-      if name == WHITELISTED_ATTRS.last
-        raise StopParsingError, 'stop parsing!'
-      end
+      raise StopParsingError if name == WHITELISTED_ATTRS.last
     end
 
     def text(str)
