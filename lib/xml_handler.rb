@@ -58,8 +58,8 @@ module RichUrls
 
     private
 
-    def stop?(name, el)
-      name == WHITELISTED_ATTRS.last && el.name == :img
+    def stop?(name, elem)
+      name == WHITELISTED_ATTRS.last && elem.name == :img
     end
   end
 end
