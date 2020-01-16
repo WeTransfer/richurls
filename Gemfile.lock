@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    richurls (0.1.5)
+    richurls (0.1.6)
       oj (~> 3)
       ox (~> 2)
       patron (~> 0.13)
