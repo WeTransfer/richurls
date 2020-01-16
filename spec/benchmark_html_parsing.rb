@@ -72,6 +72,7 @@ Benchmark.ips do |x|
     title = handler.find(:title).attributes[:text]
 
     raise "wrong title: #{title.inspect}" unless title == answer
+  rescue RichUrls::XMLHandler::StopParsingError
   end
 
   x.report('ox html parsing (experimental)') do
@@ -80,6 +81,7 @@ Benchmark.ips do |x|
     title = handler.find(:title).attributes[:text]
 
     raise "wrong title: #{title.inspect}" unless title == answer
+  rescue StandardError
   end
 
   x.compare!
