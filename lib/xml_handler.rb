@@ -17,6 +17,7 @@ module RichUrls
       src
     ].freeze
 
+    StopParsingError = Class.new(StandardError)
     El = Struct.new(:name, :attributes)
 
     attr_accessor :elements
@@ -46,6 +47,10 @@ module RichUrls
 
       el = @elements.last
       el.attributes[name] = str
+
+      if name == WHITELISTED_ATTRS.last
+        raise StopParsingError, 'stop parsing!'
+      end
     end
 
     def text(str)

@@ -45,6 +45,10 @@ class ExperimentalXMLHandler < ::Ox::Sax
 
     el = @elements.last
     el.attributes[name] = str
+
+    if name == WHITELISTED_ATTRS.last
+      raise StandardError, 'stop parsing!'
+    end
   end
 
   def text(str)
