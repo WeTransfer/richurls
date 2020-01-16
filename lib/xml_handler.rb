@@ -48,12 +48,18 @@ module RichUrls
       el = @elements.last
       el.attributes[name] = str
 
-      raise StopParsingError if name == WHITELISTED_ATTRS.last
+      raise StopParsingError if stop?(name, el)
     end
 
     def text(str)
       el = @elements.last
       el && el.attributes[:text].nil? && el.attributes[:text] = str
+    end
+
+    private
+
+    def stop?(name, el)
+      name == WHITELISTED_ATTRS.last && el.name == :img
     end
   end
 end
