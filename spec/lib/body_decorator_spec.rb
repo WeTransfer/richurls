@@ -38,13 +38,21 @@ RSpec.describe RichUrls::BodyDecorator do
   end
 
   describe 'title decorator' do
-    it 'decorates a html body' do
+    it 'selects the title element' do
       file = File.read('./spec/fixtures/title_only.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
       expect(result['title']).to eq('This is a title')
       expect(result['embed']).to eq(nil)
+    end
+
+    it 'selects the arabic title element' do
+      file = File.read('./spec/fixtures/arabic_title.html')
+      decorator = RichUrls::BodyDecorator.new(url, file)
+      result = decorator.decorate
+
+      expect(result['title']).to eq('هذا هو اللقب')
     end
 
     it 'selects the meta title over the title' do
@@ -57,12 +65,20 @@ RSpec.describe RichUrls::BodyDecorator do
   end
 
   describe 'description decorator' do
-    it 'decorates a html body' do
+    it 'fetches the correct description' do
       file = File.read('./spec/fixtures/meta_description.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
       expect(result['description']).to eq('This is a description')
+    end
+
+    it 'fetches the correct description including odd utf-8 chars' do
+      file = File.read('./spec/fixtures/weird-utf8-bytes.html')
+      decorator = RichUrls::BodyDecorator.new(url, file)
+      result = decorator.decorate
+
+      expect(result['description']).to eq('We’ve got you covered!')
     end
   end
 
