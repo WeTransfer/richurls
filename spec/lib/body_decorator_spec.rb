@@ -48,7 +48,7 @@ RSpec.describe RichUrls::BodyDecorator do
     end
 
     it 'selects the arabic title element' do
-      file = File.read('./spec/fixtures/arabic_title.html')
+      file = File.binread('./spec/fixtures/arabic_title.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
