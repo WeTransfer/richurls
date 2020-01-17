@@ -4,7 +4,7 @@ RSpec.describe RichUrls::BodyDecorator do
   let(:url) { 'https://body.com' }
 
   describe 'provider display decorator' do
-    let(:file) { File.read('./spec/fixtures/title_only.html') }
+    let(:file) { File.binread('./spec/fixtures/title_only.html') }
 
     it 'adds a provider display - removes path' do
       decorator = RichUrls::BodyDecorator.new(
@@ -39,7 +39,7 @@ RSpec.describe RichUrls::BodyDecorator do
 
   describe 'title decorator' do
     it 'selects the title element' do
-      file = File.read('./spec/fixtures/title_only.html')
+      file = File.binread('./spec/fixtures/title_only.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
@@ -56,7 +56,7 @@ RSpec.describe RichUrls::BodyDecorator do
     end
 
     it 'selects the meta title over the title' do
-      file = File.read('./spec/fixtures/meta_title.html')
+      file = File.binread('./spec/fixtures/meta_title.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
@@ -66,7 +66,7 @@ RSpec.describe RichUrls::BodyDecorator do
 
   describe 'description decorator' do
     it 'fetches the correct description' do
-      file = File.read('./spec/fixtures/meta_description.html')
+      file = File.binread('./spec/fixtures/meta_description.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
@@ -74,7 +74,7 @@ RSpec.describe RichUrls::BodyDecorator do
     end
 
     it 'fetches the correct description including odd utf-8 chars' do
-      file = File.read('./spec/fixtures/weird-utf8-bytes.html')
+      file = File.binread('./spec/fixtures/weird-utf8-bytes.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
@@ -84,7 +84,7 @@ RSpec.describe RichUrls::BodyDecorator do
 
   describe 'image decorator' do
     it 'decorates a html body - appends the url' do
-      file = File.read('./spec/fixtures/meta_image.html')
+      file = File.binread('./spec/fixtures/meta_image.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
@@ -92,7 +92,7 @@ RSpec.describe RichUrls::BodyDecorator do
     end
 
     it 'decorates a html body - does not append with a non-relative url' do
-      file = File.read('./spec/fixtures/image_tags.html')
+      file = File.binread('./spec/fixtures/image_tags.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
@@ -100,7 +100,7 @@ RSpec.describe RichUrls::BodyDecorator do
     end
 
     it 'decorates a html body - appends the url' do
-      file = File.read('./spec/fixtures/relative_image_tags.html')
+      file = File.binread('./spec/fixtures/relative_image_tags.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
@@ -110,7 +110,7 @@ RSpec.describe RichUrls::BodyDecorator do
 
   describe 'favicon decorator' do
     it 'adds the non-relative url' do
-      file = File.read('./spec/fixtures/favicon.html')
+      file = File.binread('./spec/fixtures/favicon.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
@@ -118,7 +118,7 @@ RSpec.describe RichUrls::BodyDecorator do
     end
 
     it 'adds the relative url' do
-      file = File.read('./spec/fixtures/favicon_relative.html')
+      file = File.binread('./spec/fixtures/favicon_relative.html')
       decorator = RichUrls::BodyDecorator.new(
         'https://body.com/123/abc?params=xyz',
         file
@@ -129,7 +129,7 @@ RSpec.describe RichUrls::BodyDecorator do
     end
 
     it 'adds the relative url' do
-      file = File.read('./spec/fixtures/favicon_relative.html')
+      file = File.binread('./spec/fixtures/favicon_relative.html')
       decorator = RichUrls::BodyDecorator.new(url, file)
       result = decorator.decorate
 
