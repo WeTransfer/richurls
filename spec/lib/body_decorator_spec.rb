@@ -135,5 +135,13 @@ RSpec.describe RichUrls::BodyDecorator do
 
       expect(result['favicon']).to eq('https://body.com/cats.ico')
     end
+
+    it 'adds a favicon - even if it is not according to the spec' do
+      file = File.binread('./spec/fixtures/favicon_rel.html')
+      decorator = RichUrls::BodyDecorator.new(url, file)
+      result = decorator.decorate
+
+      expect(result['favicon']).to eq('https://cats-are-god.com/cats.ico')
+    end
   end
 end

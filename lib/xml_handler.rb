@@ -29,7 +29,13 @@ module RichUrls
     def find(name, attributes = {})
       @elements.detect do |el|
         matching_attributes = attributes.all? do |key, val|
-          el.attributes[key] == val
+          if val.is_a?(Array)
+            result = el.attributes.fetch(key, '').split(' ')
+
+            val.all? { |sub_val| result.include?(sub_val) }
+          else
+            el.attributes[key] == val
+          end
         end
 
         el.name == name && matching_attributes
