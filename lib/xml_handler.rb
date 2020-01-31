@@ -26,17 +26,9 @@ module RichUrls
       @elements = []
     end
 
-    def find(name, attributes = {})
+    def find(name, attrs = {})
       @elements.detect do |el|
-        matching_attributes = attributes.all? do |key, val|
-          if val.is_a?(Array)
-            result = el.attributes.fetch(key, '').split(' ')
-
-            val.all? { |sub_val| result.include?(sub_val) }
-          else
-            el.attributes[key] == val
-          end
-        end
+        matching_attributes = attrs.all? { |k, v| el.attributes[k] == v }
 
         el.name == name && matching_attributes
       end
