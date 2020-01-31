@@ -4,8 +4,6 @@ require 'nokogiri'
 require 'ox'
 require 'oga'
 require 'hpricot'
-require 'libxml' # LibXML parsing doesn't seem to do the trick
-require 'xml'
 
 require_relative '../lib/xml_handler'
 require_relative './experimental_xml_handler'
