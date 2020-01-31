@@ -66,11 +66,30 @@ RSpec.describe RichUrls::BodyDecorator do
       expect(result['description']).to eq('This is a description')
     end
 
+    it 'fetches the correct description' do
+      file = File.binread('./spec/fixtures/p_description.html')
+      decorator = RichUrls::BodyDecorator.new(url, file)
+      result = decorator.decorate
+
+      expect(result['description']).to eq('This is a description with a link')
+    end
+
     it 'fetches the correct description including odd utf-8 chars' do
       file = File.binread('./spec/fixtures/weird-utf8-bytes.html')
       result = RichUrls::BodyDecorator.new(url, file).decorate
+      expect(result['description']).to eq(
+        'This is a description with another link'
+      )
+    end
 
-      expect(result['description']).to eq('We’ve got you covered!')
+    it 'fetches the correct description including images' do
+      file = File.binread('./spec/fixtures/p_img_description.html')
+      decorator = RichUrls::BodyDecorator.new(url, file)
+      result = decorator.decorate
+
+      expect(result['description']).to eq(
+        'This is a description with another link'
+      )
     end
   end
 
