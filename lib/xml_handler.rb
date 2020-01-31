@@ -3,8 +3,10 @@ module RichUrls
     WHITELISTED_EL_NAMES = %i[
       title
       meta
+      script
       link
       img
+      p
     ].freeze
 
     WHITELISTED_ATTRS = %i[
