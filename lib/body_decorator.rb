@@ -22,6 +22,12 @@ module RichUrls
       'embed' => Parsers::EmbedParser
     }.freeze
 
+    def self.decorate(url, body)
+      new(url, body).decorate
+    end
+
+    private_class_method :new
+
     def initialize(url, body)
       @url = url
       @xml = XMLHandler.new
