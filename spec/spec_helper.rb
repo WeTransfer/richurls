@@ -5,22 +5,24 @@ Bundler.require(:default, :test)
 # require the app
 require_relative '../lib/richurls.rb'
 
-class Cache::RedisWrapper < Cache::Wrapper
-  def self.redis
-    @redis ||= Redis.new
-  end
+module Cache
+  class RedisWrapper < Wrapper
+    def self.redis
+      @redis ||= Redis.new
+    end
 
-  def get(key)
-		self.class.redis.get(key)
-  end
+    def get(key)
+      self.class.redis.get(key)
+    end
 
-  def set(key, value, time)
-    self.class.redis.set(key, value, ex: time)
-  end
+    def set(key, value, time)
+      self.class.redis.set(key, value, ex: time)
+    end
 
-  def extend(key, time)
-    self.class.redis.expire(key, time)
-	end
+    def extend(key, time)
+      self.class.redis.expire(key, time)
+    end
+  end
 end
 
 RSpec.configure do |config|

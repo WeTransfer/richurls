@@ -15,7 +15,9 @@ module Cache
 
   class None < Wrapper
     def get(_); end
+
     def set(_, _, _); end
+
     def extend(_); end
   end
 end
