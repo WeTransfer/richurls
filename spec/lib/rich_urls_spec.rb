@@ -16,4 +16,18 @@ RSpec.describe RichUrls do
     expect(enriched).to have_key('provider_display')
     expect(enriched).to have_key('favicon')
   end
+
+  context '#config' do
+    it 'sets a caching wrapper' do
+      expect(ENV).to receive(:fetch)
+        .with('RICH_URLS_CACHING', 'none')
+        .and_return('redis')
+
+      expect(RichUrls.cache).to eq(Cache::RedisWrapper)
+    end
+
+    it 'disables the caching wrapper' do
+      expect(RichUrls.cache).to eq(Cache::NoneWrapper)
+    end
+  end
 end
