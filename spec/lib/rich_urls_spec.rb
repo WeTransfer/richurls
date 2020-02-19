@@ -18,16 +18,16 @@ RSpec.describe RichUrls do
   end
 
   context '#config' do
-    it 'sets a caching wrapper' do
-      expect(ENV).to receive(:fetch)
-        .with('RICH_URLS_CACHING', 'none')
-        .and_return('redis')
+    it 'sets a custom wrapper as the caching wrapper' do
+      RichUrls.cache = Cache::RedisWrapper
 
-      expect(RichUrls.cache).to eq(Cache::RedisWrapper)
+      expect(RichUrls.cache).to be_a(Cache::RedisWrapper)
     end
 
-    it 'disables the caching wrapper' do
-      expect(RichUrls.cache).to eq(Cache::NoneWrapper)
+    it 'sets none as the caching wrapper' do
+      RichUrls.cache = Cache::None
+
+      expect(RichUrls.cache).to be_a(Cache::None)
     end
   end
 end

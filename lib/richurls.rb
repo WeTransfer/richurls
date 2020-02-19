@@ -11,7 +11,16 @@ module RichUrls
   class MalformedURLError < StandardError; end
 
   def self.cache
-    @cache ||= Cache.for(ENV.fetch('RICH_URLS_CACHING', 'none'))
+    @cache || Cache::None.new
+  end
+
+  def self.cache=(wrapper)
+    unless wrapper < Cache::Wrapper
+      raise ArgumentError,
+            'caching wrapper needs to be of type Cache::Wrapper'
+    end
+
+    @cache ||= wrapper.new
   end
 
   def self.enrich(url)

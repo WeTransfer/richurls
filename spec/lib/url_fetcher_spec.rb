@@ -5,10 +5,7 @@ RSpec.describe RichUrls::UrlFetcher do
   let(:redis) { Redis.new }
 
   before do
-    expect(ENV).to receive(:fetch)
-      .with('RICH_URLS_CACHING', 'none')
-      .and_return('redis')
-
+    RichUrls.cache = Cache::RedisWrapper
     redis.flushall
 
     response = Patron::Response.new(
