@@ -5,7 +5,7 @@ RSpec.describe RichUrls::UrlFetcher do
   let(:redis) { Redis.new }
 
   before do
-    RichUrls.cache = Cache::RedisWrapper
+    RichUrls.cache = RichUrls::Cache::RedisWrapper
     redis.flushall
 
     response = Patron::Response.new(
