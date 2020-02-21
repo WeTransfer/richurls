@@ -44,3 +44,9 @@ class CustomCache < Cache::Wrapper
   end
 end
 ```
+
+Finally you can enable the `CustomCache` by adding:
+
+```ruby
+RichUrls.cache = CustomCache
+```
