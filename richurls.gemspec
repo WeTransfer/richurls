@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name = 'richurls'
-  spec.version = '0.1.9'
+  spec.version = '0.2.0'
   spec.authors = ['grdw']
   spec.email = ['gerard@wetransfer.com']
 
@@ -31,8 +31,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'oj', '~> 3'
   spec.add_dependency 'ox', '~> 2'
   spec.add_dependency 'patron', '~> 0.13'
-  spec.add_dependency 'redis', '~> 4.1'
   spec.add_development_dependency 'bundler', '~> 2.1'
+  spec.add_development_dependency 'redis', '~> 4.1'
   spec.add_development_dependency 'rspec', '~> 3.9'
   spec.add_development_dependency 'rubocop', '~> 0.79'
 end

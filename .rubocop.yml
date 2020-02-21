@@ -3,29 +3,31 @@ AllCops:
 
 Lint/SuppressedException:
   Enabled: false
-
 Lint/AssignmentInCondition:
   Exclude:
     - 'spec/**/*.rb'
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
     - '*.gemspec'
-Style/FormatString:
+Metrics/MethodLength:
   Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*.rb'
 Style/Documentation:
   Enabled: false
-# This is causing breaking changes:
 Style/ExpandPathArguments:
+  Enabled: false
+Style/FormatString:
   Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/GuardClause:
   Enabled: false
-Style/RegexpLiteral:
+Naming/MemoizedInstanceVariableName:
   Enabled: false
-Style/BlockDelimiters:
-  Exclude:
-    - 'spec/**/*.rb'
-Metrics/MethodLength:
+Style/RegexpLiteral:
   Enabled: false

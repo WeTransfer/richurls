@@ -18,10 +18,10 @@ module RichUrls
     end
 
     def fetch
-      cached = redis.get(digest)
+      cached = RichUrls.cache.get(digest)
 
       if cached
-        redis.expire(digest, CACHE_TIME)
+        RichUrls.cache.extend(digest, CACHE_TIME)
         Oj.load(cached)
       else
         patron_call
@@ -29,10 +29,6 @@ module RichUrls
     end
 
     private
-
-    def redis
-      @redis ||= Redis.new
-    end
 
     def digest
       @digest ||= Digest::MD5.hexdigest(@url)
@@ -44,7 +40,7 @@ module RichUrls
 
       if response.status < 400
         decorated = BodyDecorator.new(response.url, response.body).decorate
-        redis.set(digest, Oj.dump(decorated), ex: CACHE_TIME)
+        RichUrls.cache.set(digest, Oj.dump(decorated), CACHE_TIME)
         decorated
       else
         raise UrlFetcherError, 'url cannot be found'
