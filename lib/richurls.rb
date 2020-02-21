@@ -1,5 +1,4 @@
 require 'oj'
-require 'redis'
 require 'uri'
 require 'digest'
 
