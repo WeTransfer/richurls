@@ -30,7 +30,7 @@ RichUrls.enrich('https://wetransfer.com')
 By default caching is turned off. Caching can be enabled by writing a cache wrapper as such:
 
 ```ruby
-class CustomCache < RichURLs::Cache::Wrapper
+class CustomCache < RichUrls::Cache::Wrapper
   def get(key)
     # Callback for fetching a cache entry
   end
