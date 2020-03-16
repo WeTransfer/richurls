@@ -41,9 +41,10 @@ module RichUrls
     end
 
     def attr(name, str)
-      return unless WHITELISTED_ATTRS.include?(name)
-
       el = @elements.last
+
+      return unless el && WHITELISTED_ATTRS.include?(name)
+
       el.attributes[name] = str
 
       raise StopParsingError if stop?(name, el)
