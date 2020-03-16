@@ -31,22 +31,26 @@ By default caching is turned off. Caching can be enabled by writing a cache wrap
 
 ```ruby
 class CustomCache < RichUrls::Cache::Wrapper
+  def initialize(time:)
+    # Initialize the cache object by setting how long the cache will last
+  end
+
   def get(key)
     # Callback for fetching a cache entry
   end
 
-  def set(key, value, time)
-    # Callback for setting a value in a cache to a certain key for a certain time
+  def set(key, value)
+    # Callback for setting a value in a cache to a certain key
   end
 
-  def extend(key, time)
-    # Callback for extending a cached value by key by a certain time
+  def extend(key)
+    # Callback for extending a cached value by key
   end
 end
 ```
-
+The time
 Finally you can enable the `CustomCache` by adding:
 
 ```ruby
-RichUrls.cache = CustomCache
+RichUrls.cache = CustomCache.new(time: your_custom_cache_time)
 ```

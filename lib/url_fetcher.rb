@@ -3,7 +3,6 @@ require 'patron'
 module RichUrls
   class UrlFetcher
     DEFAULT_TIMEOUT = 10 # seconds
-    CACHE_TIME = 60 * 60 # 1 hour
 
     class UrlFetcherError < StandardError; end
 
@@ -21,7 +20,7 @@ module RichUrls
       cached = RichUrls.cache.get(digest)
 
       if cached
-        RichUrls.cache.extend(digest, CACHE_TIME)
+        RichUrls.cache.extend(digest)
         Oj.load(cached)
       else
         patron_call
@@ -40,7 +39,7 @@ module RichUrls
 
       if response.status < 400
         decorated = BodyDecorator.new(response.url, response.body).decorate
-        RichUrls.cache.set(digest, Oj.dump(decorated), CACHE_TIME)
+        RichUrls.cache.set(digest, Oj.dump(decorated))
         decorated
       else
         raise UrlFetcherError, 'url cannot be found'
