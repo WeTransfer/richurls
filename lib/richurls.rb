@@ -14,12 +14,12 @@ module RichUrls
   end
 
   def self.cache=(wrapper)
-    unless wrapper < Cache::Wrapper
+    unless wrapper.is_a? Cache::Wrapper
       raise ArgumentError,
-            'caching wrapper needs to be of type Cache::Wrapper'
+            'caching wrapper needs to be an instance of Cache::Wrapper'
     end
 
-    @cache ||= wrapper.new
+    @cache ||= wrapper
   end
 
   def self.enrich(url)

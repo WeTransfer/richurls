@@ -9,20 +9,26 @@ require 'redis'
 module RichUrls
   module Cache
     class RedisWrapper < Wrapper
-      def self.redis
+      DEFAULT_CACHE_TIME = 60 * 60 # 1 hour
+
+      def redis
         @redis ||= Redis.new
       end
 
+      def initialize(time: DEFAULT_CACHE_TIME)
+        @time = time
+      end
+
       def get(key)
-        self.class.redis.get(key)
+        redis.get(key)
       end
 
-      def set(key, value, time)
-        self.class.redis.set(key, value, ex: time)
+      def set(key, value)
+        redis.set(key, value, ex: @time)
       end
 
-      def extend(key, time)
-        self.class.redis.expire(key, time)
+      def extend(key)
+        redis.expire(key, @time)
       end
     end
   end
