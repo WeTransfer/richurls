@@ -48,7 +48,7 @@ class CustomCache < RichUrls::Cache::Wrapper
   end
 end
 ```
-The time
+
 Finally you can enable the `CustomCache` by adding:
 
 ```ruby
