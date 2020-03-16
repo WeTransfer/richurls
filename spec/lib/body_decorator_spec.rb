@@ -129,4 +129,11 @@ RSpec.describe RichUrls::BodyDecorator do
       expect(result['favicon']).to eq('https://cats-are-god.com/cats.ico')
     end
   end
+
+  it 'does not spawn a NoMethodError with a src on a script' do
+    file = File.binread('./spec/fixtures/test_script_before.html')
+    result = RichUrls::BodyDecorator.new(url, file).decorate
+
+    expect(result['provider_display']).to eq('body.com')
+  end
 end
