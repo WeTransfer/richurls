@@ -14,6 +14,8 @@ module RichUrls
       end
 
       def append_text(str)
+        str = str.strip
+
         if @attributes[:text]
           @attributes[:text] << " #{str}"
         else

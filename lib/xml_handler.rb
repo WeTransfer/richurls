@@ -1,4 +1,3 @@
-require_relative 'query'
 require_relative 'query_interface'
 
 module RichUrls
@@ -7,11 +6,17 @@ module RichUrls
       @query_interface = QueryInterface.new
     end
 
-    def elements
-      @query_interface.elements
+    def find(tag, attrs = {})
+      elements.detect do |el|
+        matching_attributes = attrs.all? { |k, v| el.attributes[k] == v }
+
+        el.tag == tag && matching_attributes
+      end
     end
 
-    private
+    def elements
+      @elements ||= @query_interface.elements
+    end
 
     def start_element(element_name)
       @query_interface.start(element_name)
