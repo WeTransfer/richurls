@@ -52,5 +52,5 @@ end
 Finally you can enable the `CustomCache` by adding:
 
 ```ruby
-RichUrls.cache = CustomCache.new(time: your_custom_cache_time)
+RichUrls.cache = CustomCache.new(time: 2.hours)
 ```
