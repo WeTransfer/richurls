@@ -38,7 +38,6 @@ module RichUrls
         raise NoXMLError,
               'document is not proper XML'
       end
-    rescue XMLHandler::StopParsingError
     end
 
     def decorate
