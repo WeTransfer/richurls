@@ -67,11 +67,12 @@ RSpec.describe RichUrls::BodyDecorator do
     end
 
     it 'fetches the correct description p-tag' do
-      pending ""
       file = File.binread('./spec/fixtures/p_description.html')
       result = RichUrls::BodyDecorator.decorate(url, file)
 
-      expect(result['description']).to eq('This is a description with a link')
+      expect(result['description']).to eq(
+        'This is a description with a link in the middle'
+      )
     end
 
     it 'fetches the correct description including images' do
