@@ -1,54 +1,52 @@
 module RichUrls
   class QueryInterface
+    WHITELISTED_EL_NAMES = %i[
+      title
+      meta
+      link
+      img
+      p
+    ].freeze
+
+    WHITELISTED_ATTRS = %i[
+      property
+      content
+      rel
+      href
+      src
+    ].freeze
+
+    require_relative './query_interface/el.rb'
+
     attr_reader :elements
-
-    class El
-      attr_reader :tag, :open, :attributes
-
-      def initialize(tag, open = true)
-        @tag = tag
-        @open = open
-        @attributes = {}
-      end
-
-      def add(key, value)
-        @attributes[key] = value
-      end
-
-      def append_text(str)
-        if @attributes[:text]
-          @attributes[:text] << " #{str}"
-        else
-          @attributes[:text] = str
-        end
-      end
-
-      def close!
-        @open = false
-      end
-    end
 
     def initialize
       @elements = []
     end
 
     def start(tag)
+      return unless WHITELISTED_EL_NAMES.include?(tag)
+
       @elements << El.new(tag)
     end
 
     def end(tag)
+      return unless WHITELISTED_EL_NAMES.include?(tag)
+
       el = @elements.reverse_each.detect { |el| el.open && el.tag == tag }
       el.close!
     end
 
     def text(str)
       el = @elements.detect(&:open)
-      el.append_text(str)
+      el && el.append_text(str)
     end
 
     def attr(key, value)
+      return unless WHITELISTED_ATTRS.include?(key)
+
       el = @elements.last
-      el.add(key, value)
+      el && el.add(key, value)
     end
   end
 end
