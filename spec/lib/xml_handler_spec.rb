@@ -14,7 +14,7 @@ RSpec.describe RichUrls::XMLHandler do
     }
 
     it 'parses xml and returns some elements' do
-      expect(xml_handler.elements.length).to eq(11)
+      expect(xml_handler.elements.length).to eq(10)
     end
   end
 

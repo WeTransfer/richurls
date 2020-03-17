@@ -18,6 +18,8 @@ module RichUrls
       src
     ].freeze
 
+    StopParsingError = Class.new(StandardError)
+
     attr_reader :elements
 
     def initialize
@@ -43,6 +45,8 @@ module RichUrls
 
       el = @elements.reverse_each.detect { |el| el.open && el.tag == tag }
       el.close!
+
+      raise StopParsingError if stop?
     end
 
     def attr(key, value)
@@ -55,6 +59,15 @@ module RichUrls
     def text(str)
       el = @elements.detect(&:open)
       el && el.append_text(str)
+    end
+
+    private
+
+    def stop?
+      p_tag = find(:p)
+      img_tag = find(:img)
+
+      p_tag && img_tag && !(p_tag.open && img_tag.open)
     end
   end
 end
