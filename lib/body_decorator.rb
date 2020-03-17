@@ -42,8 +42,8 @@ module RichUrls
     end
 
     def decorate
-      PARSERS.each_with_object({}) do |(key, parser), object|
-        object[key] = parser.call(@xml, @url)&.force_encoding('UTF-8')
+      PARSERS.transform_values do |parser|
+        parser.call(@xml, @url)&.force_encoding('UTF-8')
       end
     end
   end

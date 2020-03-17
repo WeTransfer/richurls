@@ -43,7 +43,7 @@ module RichUrls
     def end_element(tag)
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
-      el = @elements.reverse_each.detect { |el| el.open && el.tag == tag }
+      el = @elements.reverse_each.detect { |e| e.open && e.tag == tag }
       el.close!
 
       raise StopParsingError if stop?
@@ -53,12 +53,12 @@ module RichUrls
       return unless WHITELISTED_ATTRS.include?(key)
 
       el = @elements.last
-      el && el.add(key, value)
+      el&.add(key, value)
     end
 
     def text(str)
       el = @elements.detect(&:open)
-      el && el.append_text(str)
+      el&.append_text(str)
     end
 
     private
