@@ -2,9 +2,9 @@ module RichUrls
   class El
     attr_reader :tag, :open, :attributes
 
-    def initialize(tag, open = true)
+    def initialize(tag)
       @tag = tag
-      @open = open
+      @open = true
       @attributes = {}
     end
 
