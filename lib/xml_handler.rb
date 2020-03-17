@@ -1,9 +1,27 @@
-require_relative 'query_interface'
+require_relative 'el'
 
 module RichUrls
   class XMLHandler < ::Ox::Sax
+    WHITELISTED_EL_NAMES = %i[
+      title
+      meta
+      link
+      img
+      p
+    ].freeze
+
+    WHITELISTED_ATTRS = %i[
+      property
+      content
+      rel
+      href
+      src
+    ].freeze
+
+    attr_reader :elements
+
     def initialize
-      @query_interface = QueryInterface.new
+      @elements = []
     end
 
     def find(tag, attrs = {})
@@ -14,24 +32,29 @@ module RichUrls
       end
     end
 
-    def elements
-      @elements ||= @query_interface.elements
+    def start_element(tag)
+      return unless WHITELISTED_EL_NAMES.include?(tag)
+
+      @elements << El.new(tag)
     end
 
-    def start_element(element_name)
-      @query_interface.start(element_name)
+    def end_element(tag)
+      return unless WHITELISTED_EL_NAMES.include?(tag)
+
+      el = @elements.reverse_each.detect { |el| el.open && el.tag == tag }
+      el.close!
     end
 
-    def end_element(element_name)
-      @query_interface.end(element_name)
-    end
+    def attr(key, value)
+      return unless WHITELISTED_ATTRS.include?(key)
 
-    def attr(name, str)
-      @query_interface.attr(name, str)
+      el = @elements.last
+      el && el.add(key, value)
     end
 
     def text(str)
-      @query_interface.text(str)
+      el = @elements.detect(&:open)
+      el && el.append_text(str)
     end
   end
 end
