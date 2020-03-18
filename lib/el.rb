@@ -15,12 +15,13 @@ module RichUrls
     end
 
     def append_text(str)
-      str = str.strip
-
       @attributes[:text] ||= ''
 
-      if @attributes[:text].length <= MAX_TEXT_LENGTH
-        end_slice = MAX_TEXT_LENGTH - @attributes[:text].length
+      str = str.strip
+      length = @attributes[:text].length
+
+      if length <= MAX_TEXT_LENGTH
+        end_slice = MAX_TEXT_LENGTH - length
         sliced = str[0...end_slice]
 
         @attributes[:text] << sliced + ' '
