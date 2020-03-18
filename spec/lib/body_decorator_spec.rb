@@ -84,7 +84,7 @@ RSpec.describe RichUrls::BodyDecorator do
       end
 
       it 'to 1000 chars max split over multiple a-tags inside a p-tag' do
-        file = File.binread('./spec/fixtures/p_description_length_two_paragraphs.html')
+        file = File.binread('./spec/fixtures/p_description_length_two.html')
         result = RichUrls::BodyDecorator.decorate(url, file)
 
         expect(result['description'].length).to eq(1000)
