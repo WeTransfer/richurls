@@ -41,9 +41,9 @@ module RichUrls
     def start_element(tag)
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
-      el = El.new(tag)
-
       unless @counts.include?(tag)
+        el = El.new(tag)
+
         if VALID_BREAKS.include?(tag)
           @counts.add(tag)
           @breaks.push(el)
