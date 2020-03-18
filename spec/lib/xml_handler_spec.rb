@@ -65,7 +65,7 @@ RSpec.describe RichUrls::XMLHandler do
       xml_handler.end_element(:p)
 
       expect(xml_handler.elements[0].attributes[:text])
-        .to eq('Start Mid start link mid mid mid end unknown End')
+        .to eq('Start Mid start link mid mid mid end unknown End ')
     end
 
     describe 'attributes' do

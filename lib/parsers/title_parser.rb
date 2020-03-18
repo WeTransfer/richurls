@@ -4,6 +4,6 @@ module Parsers
     title_el = document.find(:title)
 
     meta_el && meta_el.attributes[:content] ||
-      title_el && title_el.attributes[:text]
+      title_el && title_el.text
   end
 end

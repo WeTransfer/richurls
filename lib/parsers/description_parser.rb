@@ -4,6 +4,6 @@ module Parsers
     p_el = document.find(:p)
 
     (meta_el && meta_el.attributes[:content]) ||
-      (p_el && p_el.attributes[:text])
+      (p_el && p_el.text)
   end
 end
