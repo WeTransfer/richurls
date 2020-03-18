@@ -16,6 +16,7 @@ class ExperimentalXMLHandler < ::Ox::Sax
     src
   ].freeze
 
+  StopParsingError = Class.new(StandardError)
   El = Struct.new(:name, :attributes)
 
   attr_accessor :elements
@@ -24,11 +25,9 @@ class ExperimentalXMLHandler < ::Ox::Sax
     @elements = []
   end
 
-  def find(name, attributes = {})
+  def find(name, attrs = {})
     @elements.detect do |el|
-      matching_attributes = attributes.all? do |key, val|
-        el.attributes[key] == val
-      end
+      matching_attributes = attrs.all? { |k, v| el.attributes[k] == v }
 
       el.name == name && matching_attributes
     end
@@ -41,17 +40,23 @@ class ExperimentalXMLHandler < ::Ox::Sax
   end
 
   def attr(name, str)
-    return unless WHITELISTED_ATTRS.include?(name)
-
     el = @elements.last
+
+    return unless el && WHITELISTED_ATTRS.include?(name)
+
     el.attributes[name] = str
 
-    raise StandardError, 'stop parsing!' if name == WHITELISTED_ATTRS.last
+    raise StopParsingError if stop?(name, el)
   end
 
   def text(str)
     el = @elements.last
-
     el && el.attributes[:text].nil? && el.attributes[:text] = str
+  end
+
+  private
+
+  def stop?(name, elem)
+    name == WHITELISTED_ATTRS.last && elem.name == :img
   end
 end
