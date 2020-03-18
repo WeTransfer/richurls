@@ -24,6 +24,7 @@ module RichUrls
 
     def initialize
       @elements = []
+      @breaks = { p: nil, img: nil }
     end
 
     def find(tag, attrs = {})
@@ -37,7 +38,13 @@ module RichUrls
     def start_element(tag)
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
-      @elements << El.new(tag)
+      el = El.new(tag)
+
+      if @breaks.key?(tag) && @breaks[tag].nil?
+        @breaks[tag] = el
+      end
+
+      @elements << el
     end
 
     def end_element(tag)
@@ -64,10 +71,7 @@ module RichUrls
     private
 
     def stop?
-      p_tag = find(:p)
-      img_tag = find(:img)
-
-      p_tag && img_tag && !(p_tag.open && img_tag.open)
+      @breaks.values.all? { |el| !el.nil? && !el.open }
     end
   end
 end

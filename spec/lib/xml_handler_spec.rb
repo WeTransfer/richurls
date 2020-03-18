@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe RichUrls::XMLHandler do
-  describe 'real life example' do
-    let(:body) { File.binread('./spec/fixtures/xml_handler.html') }
+  describe 'from a file' do
     let(:xml_handler) {
       begin
         xml = RichUrls::XMLHandler.new
@@ -13,8 +12,20 @@ RSpec.describe RichUrls::XMLHandler do
       end
     }
 
-    it 'parses xml and returns some elements' do
-      expect(xml_handler.elements.length).to eq(10)
+    describe 'real life example' do
+      let(:body) { File.binread('./spec/fixtures/xml_handler.html') }
+
+      it 'parses xml and returns some elements' do
+        expect(xml_handler.elements.length).to eq(10)
+      end
+    end
+
+    describe 'stop parsing' do
+      let(:body) { File.binread('./spec/fixtures/xml_handler_stop.html') }
+
+      it 'parses xml and stops at the right time' do
+        expect(xml_handler.elements.length).to eq(10_000)
+      end
     end
   end
 
