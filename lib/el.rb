@@ -1,5 +1,7 @@
 module RichUrls
   class El
+    MAX_TEXT_LENGTH = 1000
+
     attr_reader :tag, :open, :attributes
 
     def initialize(tag)
@@ -16,9 +18,11 @@ module RichUrls
       str = str.strip
 
       if @attributes[:text]
-        @attributes[:text] << " #{str}"
+        if @attributes[:text].length <= MAX_TEXT_LENGTH
+          @attributes[:text] << " #{str[0...(MAX_TEXT_LENGTH-@attributes[:text].length)-1]}"
+        end
       else
-        @attributes[:text] = str
+        @attributes[:text] = str[0...MAX_TEXT_LENGTH]
       end
     end
 

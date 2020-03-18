@@ -75,6 +75,22 @@ RSpec.describe RichUrls::BodyDecorator do
       )
     end
 
+    describe 'limit description text' do
+      it 'to 1000 chars max' do
+        file = File.binread('./spec/fixtures/p_description_length.html')
+        result = RichUrls::BodyDecorator.decorate(url, file)
+
+        expect(result['description'].length).to eq(1000)
+      end
+
+      it 'to 1000 chars max split over multiple a-tags inside a p-tag' do
+        file = File.binread('./spec/fixtures/p_description_length_two_paragraphs.html')
+        result = RichUrls::BodyDecorator.decorate(url, file)
+
+        expect(result['description'].length).to eq(1000)
+      end
+    end
+
     it 'fetches the correct description including images' do
       file = File.binread('./spec/fixtures/p_img_description.html')
       result = RichUrls::BodyDecorator.decorate(url, file)
