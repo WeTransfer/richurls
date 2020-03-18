@@ -50,12 +50,12 @@ RSpec.describe RichUrls::XMLHandler do
     # structure is like:
     # <p>
     #   Start
-    #   <p>
+    #   <span>
     #     Mid start
-    #     <a>link mid mid</a>
+    #     <span>link mid mid</span>
     #     mid end
     #     <unknown_el>Some text</unknown_el>
-    #   </p>
+    #   </span>
     #   End
     # </p>
     it 'chains text attributes together' do
