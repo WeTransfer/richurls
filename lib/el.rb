@@ -11,6 +11,8 @@ module RichUrls
     end
 
     def add(key, value)
+      return if @attributes[key]
+
       @attributes[key] = value
     end
 

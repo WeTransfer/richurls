@@ -16,7 +16,7 @@ RSpec.describe RichUrls::XMLHandler do
       let(:body) { File.binread('./spec/fixtures/xml_handler.html') }
 
       it 'parses xml and returns some elements' do
-        expect(xml_handler.elements.length).to eq(10)
+        expect(xml_handler.elements.length).to eq(9)
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe RichUrls::XMLHandler do
       let(:body) { File.binread('./spec/fixtures/xml_handler_stop.html') }
 
       it 'parses xml and stops at the right time' do
-        expect(xml_handler.elements.length).to eq(10_000)
+        expect(xml_handler.elements.length).to eq(2)
       end
     end
   end
@@ -62,16 +62,16 @@ RSpec.describe RichUrls::XMLHandler do
       xml_handler = RichUrls::XMLHandler.new
       xml_handler.start_element(:p)
       xml_handler.text('Start')
-      xml_handler.start_element(:p)
+      xml_handler.start_element(:span)
       xml_handler.text('Mid start')
-      xml_handler.start_element(:a)
+      xml_handler.start_element(:span)
       xml_handler.text('link mid mid')
-      xml_handler.end_element(:a)
+      xml_handler.end_element(:span)
       xml_handler.text('mid end')
       xml_handler.start_element(:unknown_el)
       xml_handler.text('unknown')
       xml_handler.end_element(:unknown_el)
-      xml_handler.end_element(:p)
+      xml_handler.end_element(:span)
       xml_handler.text('End')
       xml_handler.end_element(:p)
 

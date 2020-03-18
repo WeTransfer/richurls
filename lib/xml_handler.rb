@@ -18,13 +18,16 @@ module RichUrls
       src
     ].freeze
 
+    VALID_BREAKS = %i[img p].freeze
+
     StopParsingError = Class.new(StandardError)
 
     attr_reader :elements
 
     def initialize
       @elements = []
-      @breaks = { p: nil, img: nil }
+      @counts = Set.new
+      @breaks = []
     end
 
     def find(tag, attrs = {})
@@ -40,18 +43,21 @@ module RichUrls
 
       el = El.new(tag)
 
-      if @breaks.key?(tag) && @breaks[tag].nil?
-        @breaks[tag] = el
-      end
+      unless @counts.include?(tag)
+        if VALID_BREAKS.include?(tag)
+          @counts.add(tag)
+          @breaks.push(el)
+        end
 
-      @elements << el
+        @elements << el
+      end
     end
 
     def end_element(tag)
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
       el = @elements.reverse_each.detect { |e| e.open && e.tag == tag }
-      el.close!
+      el&.close!
 
       raise StopParsingError if stop?
     end
@@ -71,7 +77,8 @@ module RichUrls
     private
 
     def stop?
-      @breaks.values.all? { |el| !el.nil? && !el.open }
+      @breaks.length == VALID_BREAKS.length &&
+        @breaks.all? { |el| !el.open }
     end
   end
 end
