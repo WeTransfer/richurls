@@ -3,7 +3,6 @@ module Parsers
     meta_el = document.find(:meta, property: 'og:title')
     title_el = document.find(:title)
 
-    meta_el && meta_el.attributes[:content] ||
-      title_el && title_el.text
+    meta_el && meta_el.attributes[:content] || title_el&.text
   end
 end
