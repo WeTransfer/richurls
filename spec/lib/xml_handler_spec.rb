@@ -16,7 +16,7 @@ RSpec.describe RichUrls::XMLHandler do
       let(:body) { File.binread('./spec/fixtures/xml_handler.html') }
 
       it 'parses xml and returns some elements' do
-        expect(xml_handler.elements.length).to eq(9)
+        expect(xml_handler.elements.length).to eq(6)
       end
     end
 
@@ -94,6 +94,40 @@ RSpec.describe RichUrls::XMLHandler do
         xml_handler.attr(:x, 'y')
 
         expect(xml_handler.elements[0].attributes[:x]).to eq(nil)
+      end
+    end
+
+    describe 'smart adding of elements' do
+      it 'adds a p-element' do
+        xml_handler = RichUrls::XMLHandler.new
+        xml_handler.start_element(:p)
+
+        expect(xml_handler.elements.length).to eq(1)
+      end
+
+      it 'does not add two p-elements' do
+        xml_handler = RichUrls::XMLHandler.new
+        xml_handler.start_element(:p)
+        xml_handler.text('some text')
+        xml_handler.end_element(:p)
+        xml_handler.start_element(:p)
+        xml_handler.text('some non-reachable text')
+        xml_handler.end_element(:p)
+
+        expect(xml_handler.elements.length).to eq(1)
+      end
+
+      it 'does not add a p-element if a meta[og:description] tag is found' do
+        xml_handler = RichUrls::XMLHandler.new
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:description')
+        xml_handler.attr(:content, 'A description')
+        xml_handler.end_element(:meta)
+        xml_handler.start_element(:p)
+        xml_handler.text('some non-reachable text')
+        xml_handler.end_element(:p)
+
+        expect(xml_handler.elements.length).to eq(1)
       end
     end
   end

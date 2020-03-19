@@ -18,7 +18,11 @@ module RichUrls
       src
     ].freeze
 
-    VALID_BREAKS = %i[img p].freeze
+    FALLBACK_ELEMENTS = {
+      img: 'og:image',
+      p: 'og:description',
+      title: 'og:title'
+    }.freeze
 
     StopParsingError = Class.new(StandardError)
 
@@ -27,7 +31,6 @@ module RichUrls
     def initialize
       @elements = []
       @counts = Set.new
-      @breaks = []
     end
 
     def find(tag, attrs = {})
@@ -41,14 +44,8 @@ module RichUrls
     def start_element(tag)
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
-      unless @counts.include?(tag)
+      if add_element?(tag)
         el = El.new(tag)
-
-        if VALID_BREAKS.include?(tag)
-          @counts.add(tag)
-          @breaks.push(el)
-        end
-
         @elements << el
       end
     end
@@ -76,9 +73,17 @@ module RichUrls
 
     private
 
+    def add_element?(tag)
+      return true unless FALLBACK_ELEMENTS.keys.include?(tag)
+      return false if @counts.include?(tag)
+
+      @counts.add(tag)
+
+      !find(:meta, property: FALLBACK_ELEMENTS.fetch(tag))
+    end
+
     def stop?
-      @breaks.length == VALID_BREAKS.length &&
-        @breaks.all? { |el| !el.open }
+      @counts.length == FALLBACK_ELEMENTS.length
     end
   end
 end
