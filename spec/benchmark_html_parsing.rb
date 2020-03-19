@@ -79,7 +79,7 @@ Benchmark.ips do |x|
     title = handler.find(:title).attributes[:text]
 
     raise "wrong title: #{title.inspect}" unless title == answer
-  rescue StandardError
+  rescue ExperimentalXMLHandler::StopParsingError
   end
 
   x.compare!
