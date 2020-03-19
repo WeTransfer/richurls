@@ -200,7 +200,7 @@ RSpec.describe RichUrls::XMLHandler do
         xml_handler.end_element(:meta)
         # title
         xml_handler.start_element(:title)
-        xml_handler.attr(:text, 'A title')
+        xml_handler.text('A title')
 
         expect { xml_handler.end_element(:title) }
           .to raise_error(RichUrls::XMLHandler::StopParsingError)

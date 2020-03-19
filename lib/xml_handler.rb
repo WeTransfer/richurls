@@ -32,7 +32,7 @@ module RichUrls
     def initialize
       @elements = []
       @counts = Set.new
-      @breaks = {
+      @properties = {
         title: false,
         description: false,
         image: false,
@@ -51,10 +51,7 @@ module RichUrls
     def start_element(tag)
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
-      if add_element?(tag)
-        el = El.new(tag)
-        @elements << el
-      end
+      @elements << El.new(tag) if add_element?(tag)
     end
 
     def end_element(tag)
@@ -65,24 +62,36 @@ module RichUrls
       if el
         el.close!
 
-        if (el.tag == :meta && el.attributes[:property] == 'og:title') || el.tag == :title
-          @breaks[:title] = true
+        if el.tag == :meta && el.attributes[:property] == 'og:title'
+          @properties[:title] = el.attributes[:content]
         end
 
-        if (el.tag == :meta && el.attributes[:property] == 'og:description') || el.tag == :p
-          @breaks[:description] = true
+        if el.tag == :title
+          @properties[:title] = el.text
         end
 
-        if (el.tag == :meta && el.attributes[:property] == 'og:image') || el.tag == :img
-          @breaks[:image] = true
+        if el.tag == :meta && el.attributes[:property] == 'og:description'
+          @properties[:description] = el.attributes[:content]
+        end
+
+        if el.tag == :p
+          @properties[:description] = el.text
+        end
+
+        if el.tag == :meta && el.attributes[:property] == 'og:image'
+          @properties[:image] = el.attributes[:content]
+        end
+
+        if el.tag == :img
+          @properties[:image] = el.attributes[:src]
         end
 
         if el.tag == :link && KEYWORDS.include?(el.attributes[:rel])
-          @breaks[:favicon] = true
+          @properties[:favicon] = el.attributes[:href]
         end
       end
 
-      raise StopParsingError if @breaks.values.all?
+      raise StopParsingError if @properties.values.all?
     end
 
     def attr(key, value)
