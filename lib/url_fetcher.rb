@@ -38,7 +38,7 @@ module RichUrls
       response = session.get(@url)
 
       if response.status < 400
-        decorated = BodyDecorator.new(response.url, response.body).decorate
+        decorated = BodyDecorator.decorate(response.url, response.body)
         RichUrls.cache.set(digest, Oj.dump(decorated))
         decorated
       else

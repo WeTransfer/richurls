@@ -22,6 +22,12 @@ module RichUrls
       'embed' => Parsers::EmbedParser
     }.freeze
 
+    def self.decorate(url, body)
+      new(url, body).decorate
+    end
+
+    private_class_method :new
+
     def initialize(url, body)
       @url = url
       @xml = XMLHandler.new
@@ -36,8 +42,8 @@ module RichUrls
     end
 
     def decorate
-      PARSERS.each_with_object({}) do |(key, parser), object|
-        object[key] = parser.call(@xml, @url)&.force_encoding('UTF-8')
+      PARSERS.transform_values do |parser|
+        parser.call(@xml, @url)&.force_encoding('UTF-8')
       end
     end
   end

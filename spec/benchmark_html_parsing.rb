@@ -4,8 +4,6 @@ require 'nokogiri'
 require 'ox'
 require 'oga'
 require 'hpricot'
-require 'libxml' # LibXML parsing doesn't seem to do the trick
-require 'xml'
 
 require_relative '../lib/xml_handler'
 require_relative './experimental_xml_handler'
@@ -75,7 +73,7 @@ Benchmark.ips do |x|
   rescue RichUrls::XMLHandler::StopParsingError
   end
 
-  x.report('ox html parsing (experimental)') do
+  x.report('ox html parsing (old)') do
     handler = ExperimentalXMLHandler.new
     Ox.sax_html(handler, StringIO.new(body))
     title = handler.find(:title).attributes[:text]
