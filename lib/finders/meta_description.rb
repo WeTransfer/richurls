@@ -1,7 +1,7 @@
 module RichUrls
   module Finders
     module MetaDescription
-      ATTRIBUTE = :description
+      ATTRIBUTE = 'description'
 
       def self.found?(el)
         el.tag == :meta && el.attributes[:property] == 'og:description'

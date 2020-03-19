@@ -1,7 +1,7 @@
 module RichUrls
   module Finders
     module MetaImage
-      ATTRIBUTE = :image
+      ATTRIBUTE = 'image'
 
       def self.found?(el)
         el.tag == :meta && el.attributes[:property] == 'og:image'

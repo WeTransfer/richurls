@@ -49,10 +49,10 @@ module RichUrls
       @elements = []
       @counts = Set.new
       @properties = {
-        title: nil,
-        description: nil,
-        image: nil,
-        favicon: nil
+        'title' => nil,
+        'description' => nil,
+        'image' => nil,
+        'favicon' => nil
       }
     end
 

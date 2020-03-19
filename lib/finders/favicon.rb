@@ -1,7 +1,7 @@
 module RichUrls
   module Finders
     module Favicon
-      ATTRIBUTE = :favicon
+      ATTRIBUTE = 'favicon'
       KEYWORDS = ['shortcut icon', 'icon shortcut', 'icon'].freeze
 
       def self.found?(el)

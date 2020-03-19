@@ -1,7 +1,7 @@
 module RichUrls
   module Finders
     module Image
-      ATTRIBUTE = :image
+      ATTRIBUTE = 'image'
 
       def self.found?(el)
         el.tag == :img
