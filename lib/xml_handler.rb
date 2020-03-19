@@ -31,7 +31,7 @@ module RichUrls
     end
 
     def find(tag, attrs = {})
-      elements.detect do |el|
+      @elements.detect do |el|
         matching_attributes = attrs.all? { |k, v| el.attributes[k] == v }
 
         el.tag == tag && matching_attributes
