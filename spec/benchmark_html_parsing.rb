@@ -1,3 +1,4 @@
+require 'set'
 require 'benchmark/ips'
 require 'nokogiri'
 require 'ox'
