@@ -1,8 +1,14 @@
 require_relative 'el'
+require_relative 'finders/title'
+require_relative 'finders/meta_title'
+require_relative 'finders/description'
+require_relative 'finders/meta_description'
+require_relative 'finders/image'
+require_relative 'finders/meta_image'
+require_relative 'finders/favicon'
 
 module RichUrls
   class XMLHandler < ::Ox::Sax
-    KEYWORDS = ['shortcut icon', 'icon shortcut', 'icon'].freeze
     WHITELISTED_EL_NAMES = %i[
       title
       meta
@@ -33,10 +39,10 @@ module RichUrls
       @elements = []
       @counts = Set.new
       @properties = {
-        title: false,
-        description: false,
-        image: false,
-        favicon: false
+        title: nil,
+        description: nil,
+        image: nil,
+        favicon: nil
       }
     end
 
@@ -62,32 +68,21 @@ module RichUrls
       if el
         el.close!
 
-        if el.tag == :meta && el.attributes[:property] == 'og:title'
-          @properties[:title] = el.attributes[:content]
-        end
+        finders = [
+          Finders::MetaTitle,
+          Finders::MetaDescription,
+          Finders::MetaImage,
+          Finders::Favicon,
+          Finders::Title,
+          Finders::Description,
+          Finders::Image,
+        ]
 
-        if el.tag == :title
-          @properties[:title] = el.text
-        end
-
-        if el.tag == :meta && el.attributes[:property] == 'og:description'
-          @properties[:description] = el.attributes[:content]
-        end
-
-        if el.tag == :p
-          @properties[:description] = el.text
-        end
-
-        if el.tag == :meta && el.attributes[:property] == 'og:image'
-          @properties[:image] = el.attributes[:content]
-        end
-
-        if el.tag == :img
-          @properties[:image] = el.attributes[:src]
-        end
-
-        if el.tag == :link && KEYWORDS.include?(el.attributes[:rel])
-          @properties[:favicon] = el.attributes[:href]
+        finders.each do |finder|
+          if finder.found?(el)
+            @properties[finder::ATTRIBUTE] = finder.content(el)
+            break
+          end
         end
       end
 
