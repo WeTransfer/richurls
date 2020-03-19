@@ -2,6 +2,7 @@ require_relative 'el'
 
 module RichUrls
   class XMLHandler < ::Ox::Sax
+    KEYWORDS = ['shortcut icon', 'icon shortcut', 'icon'].freeze
     WHITELISTED_EL_NAMES = %i[
       title
       meta
@@ -76,7 +77,7 @@ module RichUrls
           @breaks[:image] = true
         end
 
-        if el.tag == :link && Parsers::FaviconParser::KEYWORDS.include?(el.attributes[:rel])
+        if el.tag == :link && KEYWORDS.include?(el.attributes[:rel])
           @breaks[:favicon] = true
         end
       end
