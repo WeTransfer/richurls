@@ -31,9 +31,19 @@ module RichUrls
       title: 'og:title'
     }.freeze
 
+    FINDERS = [
+      Finders::MetaTitle,
+      Finders::MetaDescription,
+      Finders::MetaImage,
+      Finders::Favicon,
+      Finders::Title,
+      Finders::Description,
+      Finders::Image
+    ].freeze
+
     StopParsingError = Class.new(StandardError)
 
-    attr_reader :elements
+    attr_reader :elements, :properties
 
     def initialize
       @elements = []
@@ -65,24 +75,14 @@ module RichUrls
 
       el = @elements.reverse_each.detect { |e| e.open && e.tag == tag }
 
-      if el
-        el.close!
+      return unless el
 
-        finders = [
-          Finders::MetaTitle,
-          Finders::MetaDescription,
-          Finders::MetaImage,
-          Finders::Favicon,
-          Finders::Title,
-          Finders::Description,
-          Finders::Image,
-        ]
+      el.close!
 
-        finders.each do |finder|
-          if finder.found?(el)
-            @properties[finder::ATTRIBUTE] = finder.content(el)
-            break
-          end
+      FINDERS.each do |finder|
+        if finder.found?(el)
+          @properties[finder::ATTRIBUTE] = finder.content(el)
+          break
         end
       end
 
