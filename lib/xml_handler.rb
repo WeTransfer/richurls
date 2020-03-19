@@ -80,7 +80,7 @@ module RichUrls
       el.close!
 
       FINDERS.each do |finder|
-        if finder.found?(el)
+        if @properties[finder::ATTRIBUTE].nil? && finder.found?(el)
           @properties[finder::ATTRIBUTE] = finder.content(el)
           break
         end
