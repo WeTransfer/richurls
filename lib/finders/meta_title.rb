@@ -8,7 +8,7 @@ module RichUrls
       end
 
       def self.content(elem)
-        elem.attributes[:content].force_encoding('UTF-8')
+        elem.attributes[:content]
       end
     end
   end
