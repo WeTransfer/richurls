@@ -74,17 +74,10 @@ module RichUrls
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
       el = @elements.reverse_each.detect { |e| e.open && e.tag == tag }
-
       return unless el
 
       el.close!
-
-      FINDERS.each do |finder|
-        if @properties[finder::ATTRIBUTE].nil? && finder.found?(el)
-          @properties[finder::ATTRIBUTE] = finder.content(el)
-          break
-        end
-      end
+      find_element(el)
 
       raise StopParsingError if @properties.values.all?
     end
@@ -102,6 +95,15 @@ module RichUrls
     end
 
     private
+
+    def find_element(elem)
+      FINDERS.each do |finder|
+        if @properties[finder::ATTRIBUTE].nil? && finder.found?(elem)
+          @properties[finder::ATTRIBUTE] = finder.content(elem)
+          break
+        end
+      end
+    end
 
     def add_element?(tag)
       return true unless FALLBACK_ELEMENTS.keys.include?(tag)

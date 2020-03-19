@@ -1,14 +1,14 @@
 module RichUrls
   module Finders
     module Image
-      ATTRIBUTE = 'image'
+      ATTRIBUTE = 'image'.freeze
 
-      def self.found?(el)
-        el.tag == :img
+      def self.found?(elem)
+        elem.tag == :img
       end
 
-      def self.content(el)
-        el.attributes[:src]
+      def self.content(elem)
+        elem.attributes[:src]
       end
     end
   end

@@ -1,14 +1,14 @@
 module RichUrls
   module Finders
     module Title
-      ATTRIBUTE = 'title'
+      ATTRIBUTE = 'title'.freeze
 
-      def self.found?(el)
-        el.tag == :title
+      def self.found?(elem)
+        elem.tag == :title
       end
 
-      def self.content(el)
-        el.text.force_encoding('UTF-8')
+      def self.content(elem)
+        elem.text
       end
     end
   end

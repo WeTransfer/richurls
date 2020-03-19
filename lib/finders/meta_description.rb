@@ -1,14 +1,14 @@
 module RichUrls
   module Finders
     module MetaDescription
-      ATTRIBUTE = 'description'
+      ATTRIBUTE = 'description'.freeze
 
-      def self.found?(el)
-        el.tag == :meta && el.attributes[:property] == 'og:description'
+      def self.found?(elem)
+        elem.tag == :meta && elem.attributes[:property] == 'og:description'
       end
 
-      def self.content(el)
-        el.attributes[:content]
+      def self.content(elem)
+        elem.attributes[:content]
       end
     end
   end

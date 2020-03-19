@@ -1,14 +1,14 @@
 module RichUrls
   module Finders
     module MetaImage
-      ATTRIBUTE = 'image'
+      ATTRIBUTE = 'image'.freeze
 
-      def self.found?(el)
-        el.tag == :meta && el.attributes[:property] == 'og:image'
+      def self.found?(elem)
+        elem.tag == :meta && elem.attributes[:property] == 'og:image'
       end
 
-      def self.content(el)
-        el.attributes[:content]
+      def self.content(elem)
+        elem.attributes[:content]
       end
     end
   end

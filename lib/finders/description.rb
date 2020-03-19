@@ -1,14 +1,14 @@
 module RichUrls
   module Finders
     module Description
-      ATTRIBUTE = 'description'
+      ATTRIBUTE = 'description'.freeze
 
-      def self.found?(el)
-        el.tag == :p
+      def self.found?(elem)
+        elem.tag == :p
       end
 
-      def self.content(el)
-        el.text
+      def self.content(elem)
+        elem.text
       end
     end
   end

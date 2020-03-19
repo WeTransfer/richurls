@@ -1,15 +1,15 @@
 module RichUrls
   module Finders
     module Favicon
-      ATTRIBUTE = 'favicon'
+      ATTRIBUTE = 'favicon'.freeze
       KEYWORDS = ['shortcut icon', 'icon shortcut', 'icon'].freeze
 
-      def self.found?(el)
-        el.tag == :link && KEYWORDS.include?(el.attributes[:rel])
+      def self.found?(elem)
+        elem.tag == :link && KEYWORDS.include?(elem.attributes[:rel])
       end
 
-      def self.content(el)
-        el.attributes[:href]
+      def self.content(elem)
+        elem.attributes[:href]
       end
     end
   end

@@ -95,7 +95,8 @@ module RichUrls
       end
 
       # Out of scope. Soundcloud's URL's can't be easily transformed into
-      # an iframe because of the way this is currently setup at Soundcloud's end.
+      # an iframe because of the way this is currently setup at Soundcloud's
+      # end.
       context 'soundcloud'
 
       # Out of scope. Twitter URL's can't be easily transformed into

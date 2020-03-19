@@ -1,14 +1,14 @@
 module RichUrls
   module Finders
     module MetaTitle
-      ATTRIBUTE = 'title'
+      ATTRIBUTE = 'title'.freeze
 
-      def self.found?(el)
-        el.tag == :meta && el.attributes[:property] == 'og:title'
+      def self.found?(elem)
+        elem.tag == :meta && elem.attributes[:property] == 'og:title'
       end
 
-      def self.content(el)
-        el.attributes[:content].force_encoding('UTF-8')
+      def self.content(elem)
+        elem.attributes[:content].force_encoding('UTF-8')
       end
     end
   end
