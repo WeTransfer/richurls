@@ -3,12 +3,8 @@ module RichUrls
     module Image
       ATTRIBUTE = 'image'.freeze
 
-      def self.found?(elem)
-        elem.tag == :img
-      end
-
-      def self.content(elem)
-        elem.attributes[:src]
+      def self.find(elem)
+        elem.tag == :img && elem.attributes[:src]
       end
     end
   end

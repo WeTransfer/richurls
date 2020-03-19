@@ -3,12 +3,8 @@ module RichUrls
     module Description
       ATTRIBUTE = 'description'.freeze
 
-      def self.found?(elem)
-        elem.tag == :p
-      end
-
-      def self.content(elem)
-        elem.text
+      def self.find(elem)
+        elem.tag == :p && elem.text
       end
     end
   end

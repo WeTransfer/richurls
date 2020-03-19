@@ -3,11 +3,10 @@ module RichUrls
     module MetaDescription
       ATTRIBUTE = 'description'.freeze
 
-      def self.found?(elem)
-        elem.tag == :meta && elem.attributes[:property] == 'og:description'
-      end
+      def self.find(elem)
+        return unless elem.tag == :meta &&
+                      elem.attributes[:property] == 'og:description'
 
-      def self.content(elem)
         elem.attributes[:content]
       end
     end

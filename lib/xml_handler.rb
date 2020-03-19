@@ -98,8 +98,12 @@ module RichUrls
 
     def find_element(elem)
       FINDERS.each do |finder|
-        if @properties[finder::ATTRIBUTE].nil? && finder.found?(elem)
-          @properties[finder::ATTRIBUTE] = finder.content(elem)
+        next if @properties[finder::ATTRIBUTE]
+
+        content = finder.find(elem)
+
+        if content
+          @properties[finder::ATTRIBUTE] = content
           break
         end
       end

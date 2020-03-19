@@ -4,11 +4,10 @@ module RichUrls
       ATTRIBUTE = 'favicon'.freeze
       KEYWORDS = ['shortcut icon', 'icon shortcut', 'icon'].freeze
 
-      def self.found?(elem)
-        elem.tag == :link && KEYWORDS.include?(elem.attributes[:rel])
-      end
+      def self.find(elem)
+        return unless elem.tag == :link &&
+                      KEYWORDS.include?(elem.attributes[:rel])
 
-      def self.content(elem)
         elem.attributes[:href]
       end
     end

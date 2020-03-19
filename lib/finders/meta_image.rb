@@ -3,11 +3,10 @@ module RichUrls
     module MetaImage
       ATTRIBUTE = 'image'.freeze
 
-      def self.found?(elem)
-        elem.tag == :meta && elem.attributes[:property] == 'og:image'
-      end
+      def self.find(elem)
+        return unless elem.tag == :meta &&
+                      elem.attributes[:property] == 'og:image'
 
-      def self.content(elem)
         elem.attributes[:content]
       end
     end
