@@ -31,6 +31,12 @@ module RichUrls
     def initialize
       @elements = []
       @counts = Set.new
+      @breaks = {
+        title: false,
+        description: false,
+        image: false,
+        favicon: false
+      }
     end
 
     def find(tag, attrs = {})
@@ -54,9 +60,28 @@ module RichUrls
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
       el = @elements.reverse_each.detect { |e| e.open && e.tag == tag }
-      el&.close!
 
-      raise StopParsingError if stop?
+      if el
+        el.close!
+
+        if (el.tag == :meta && el.attributes[:property] == 'og:title') || el.tag == :title
+          @breaks[:title] = true
+        end
+
+        if (el.tag == :meta && el.attributes[:property] == 'og:description') || el.tag == :p
+          @breaks[:description] = true
+        end
+
+        if (el.tag == :meta && el.attributes[:property] == 'og:image') || el.tag == :img
+          @breaks[:image] = true
+        end
+
+        if el.tag == :link && Parsers::FaviconParser::KEYWORDS.include?(el.attributes[:rel])
+          @breaks[:favicon] = true
+        end
+      end
+
+      raise StopParsingError if @breaks.values.all?
     end
 
     def attr(key, value)
@@ -80,10 +105,6 @@ module RichUrls
       @counts.add(tag)
 
       !find(:meta, property: FALLBACK_ELEMENTS.fetch(tag))
-    end
-
-    def stop?
-      @counts.length == FALLBACK_ELEMENTS.length
     end
   end
 end

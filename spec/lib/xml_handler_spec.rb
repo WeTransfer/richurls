@@ -16,7 +16,7 @@ RSpec.describe RichUrls::XMLHandler do
       let(:body) { File.binread('./spec/fixtures/xml_handler.html') }
 
       it 'parses xml and returns some elements' do
-        expect(xml_handler.elements.length).to eq(6)
+        expect(xml_handler.elements.length).to eq(5)
       end
     end
 
@@ -128,6 +128,107 @@ RSpec.describe RichUrls::XMLHandler do
         xml_handler.end_element(:p)
 
         expect(xml_handler.elements.length).to eq(1)
+      end
+    end
+
+    describe 'smart stopping' do
+      let(:xml_handler) { RichUrls::XMLHandler.new }
+
+      it 'stops when all relevant elements have been found (image)' do
+        # meta title
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:title')
+        xml_handler.attr(:content, 'A title')
+        xml_handler.end_element(:meta)
+        # meta description
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:description')
+        xml_handler.attr(:content, 'A description')
+        xml_handler.end_element(:meta)
+        # favicon
+        xml_handler.start_element(:link)
+        xml_handler.attr(:rel, 'shortcut icon')
+        xml_handler.attr(:href, 'favicon.ico')
+        xml_handler.end_element(:link)
+        # img
+        xml_handler.start_element(:img)
+        xml_handler.attr(:src, 'test_image.jpg')
+
+        expect { xml_handler.end_element(:img) }
+          .to raise_error(RichUrls::XMLHandler::StopParsingError)
+      end
+
+      it 'stops when all relevant elements have been found (description)' do
+        # meta title
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:title')
+        xml_handler.attr(:content, 'A title')
+        xml_handler.end_element(:meta)
+        # meta image
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:image')
+        xml_handler.attr(:content, 'test_image.jpg')
+        xml_handler.end_element(:meta)
+        # favicon
+        xml_handler.start_element(:link)
+        xml_handler.attr(:rel, 'shortcut icon')
+        xml_handler.attr(:href, 'favicon.ico')
+        xml_handler.end_element(:link)
+        # p
+        xml_handler.start_element(:p)
+        xml_handler.text('A description')
+
+        expect { xml_handler.end_element(:p) }
+          .to raise_error(RichUrls::XMLHandler::StopParsingError)
+      end
+
+      it 'stops when all relevant elements have been found (title)' do
+        # favicon
+        xml_handler.start_element(:link)
+        xml_handler.attr(:rel, 'shortcut icon')
+        xml_handler.attr(:href, 'favicon.ico')
+        xml_handler.end_element(:link)
+        # meta description
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:description')
+        xml_handler.attr(:content, 'A description')
+        xml_handler.end_element(:meta)
+        # meta image
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:image')
+        xml_handler.attr(:content, 'test_image.jpg')
+        xml_handler.end_element(:meta)
+        # title
+        xml_handler.start_element(:title)
+        xml_handler.attr(:text, 'A title')
+
+        expect { xml_handler.end_element(:title) }
+          .to raise_error(RichUrls::XMLHandler::StopParsingError)
+      end
+
+      it 'stops when all relevant elements have been found' do
+        # meta title
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:title')
+        xml_handler.attr(:content, 'A title')
+        xml_handler.end_element(:meta)
+        # meta description
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:description')
+        xml_handler.attr(:content, 'A description')
+        xml_handler.end_element(:meta)
+        # meta image
+        xml_handler.start_element(:meta)
+        xml_handler.attr(:property, 'og:image')
+        xml_handler.attr(:content, 'test_image.jpg')
+        xml_handler.end_element(:meta)
+        # favicon
+        xml_handler.start_element(:link)
+        xml_handler.attr(:rel, 'shortcut icon')
+        xml_handler.attr(:href, 'favicon.ico')
+
+        expect { xml_handler.end_element(:link) }
+          .to raise_error(RichUrls::XMLHandler::StopParsingError)
       end
     end
   end
