@@ -1,4 +1,11 @@
 require_relative 'el'
+require_relative 'finders/title'
+require_relative 'finders/meta_title'
+require_relative 'finders/description'
+require_relative 'finders/meta_description'
+require_relative 'finders/image'
+require_relative 'finders/meta_image'
+require_relative 'finders/favicon'
 
 module RichUrls
   class XMLHandler < ::Ox::Sax
@@ -18,16 +25,35 @@ module RichUrls
       src
     ].freeze
 
-    VALID_BREAKS = %i[img p].freeze
+    FALLBACK_ELEMENTS = {
+      img: 'og:image',
+      p: 'og:description',
+      title: 'og:title'
+    }.freeze
+
+    FINDERS = [
+      Finders::MetaTitle,
+      Finders::MetaDescription,
+      Finders::MetaImage,
+      Finders::Favicon,
+      Finders::Title,
+      Finders::Description,
+      Finders::Image
+    ].freeze
 
     StopParsingError = Class.new(StandardError)
 
-    attr_reader :elements
+    attr_reader :elements, :properties
 
     def initialize
       @elements = []
       @counts = Set.new
-      @breaks = []
+      @properties = {
+        'title' => nil,
+        'description' => nil,
+        'image' => nil,
+        'favicon' => nil
+      }
     end
 
     def find(tag, attrs = {})
@@ -41,25 +67,19 @@ module RichUrls
     def start_element(tag)
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
-      unless @counts.include?(tag)
-        el = El.new(tag)
-
-        if VALID_BREAKS.include?(tag)
-          @counts.add(tag)
-          @breaks.push(el)
-        end
-
-        @elements << el
-      end
+      @elements << El.new(tag) if add_element?(tag)
     end
 
     def end_element(tag)
       return unless WHITELISTED_EL_NAMES.include?(tag)
 
       el = @elements.reverse_each.detect { |e| e.open && e.tag == tag }
-      el&.close!
+      return unless el
 
-      raise StopParsingError if stop?
+      el.close!
+      find_element(el)
+
+      raise StopParsingError if @properties.values.all?
     end
 
     def attr(key, value)
@@ -76,9 +96,26 @@ module RichUrls
 
     private
 
-    def stop?
-      @breaks.length == VALID_BREAKS.length &&
-        @breaks.all? { |el| !el.open }
+    def find_element(elem)
+      FINDERS.each do |finder|
+        next if @properties[finder::ATTRIBUTE]
+
+        content = finder.find(elem)
+
+        if content
+          @properties[finder::ATTRIBUTE] = content
+          break
+        end
+      end
+    end
+
+    def add_element?(tag)
+      return true unless FALLBACK_ELEMENTS.keys.include?(tag)
+      return false if @counts.include?(tag)
+
+      @counts.add(tag)
+
+      !find(:meta, property: FALLBACK_ELEMENTS.fetch(tag))
     end
   end
 end
