@@ -1,9 +1,7 @@
 require_relative 'el'
-require_relative 'finders/title'
+require_relative 'finders'
 require_relative 'finders/meta_title'
-require_relative 'finders/description'
 require_relative 'finders/meta_description'
-require_relative 'finders/image'
 require_relative 'finders/meta_image'
 require_relative 'finders/favicon'
 
@@ -100,7 +98,7 @@ module RichUrls
       FINDERS.each_pair do |finder, attribute|
         next if @properties[attribute]
 
-        content = finder.find(elem)
+        content = finder.call(elem)
 
         if content
           @properties[attribute] = content
