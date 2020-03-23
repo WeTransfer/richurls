@@ -1,7 +1,6 @@
 module RichUrls
   module Finders
     module Favicon
-      ATTRIBUTE = 'favicon'.freeze
       KEYWORDS = ['shortcut icon', 'icon shortcut', 'icon'].freeze
 
       def self.find(elem)
