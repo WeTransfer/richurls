@@ -31,15 +31,15 @@ module RichUrls
       title: 'og:title'
     }.freeze
 
-    FINDERS = [
-      Finders::MetaTitle,
-      Finders::MetaDescription,
-      Finders::MetaImage,
-      Finders::Favicon,
-      Finders::Title,
-      Finders::Description,
-      Finders::Image
-    ].freeze
+    FINDERS = {
+      Finders::MetaTitle => 'title',
+      Finders::MetaDescription => 'description',
+      Finders::MetaImage => 'image',
+      Finders::Favicon => 'favicon',
+      Finders::Title => 'title',
+      Finders::Description => 'description',
+      Finders::Image => 'image'
+    }.freeze
 
     StopParsingError = Class.new(StandardError)
 
@@ -97,13 +97,13 @@ module RichUrls
     private
 
     def find_element(elem)
-      FINDERS.each do |finder|
-        next if @properties[finder::ATTRIBUTE]
+      FINDERS.each_pair do |finder, attribute|
+        next if @properties[attribute]
 
         content = finder.find(elem)
 
         if content
-          @properties[finder::ATTRIBUTE] = content
+          @properties[attribute] = content
           break
         end
       end
