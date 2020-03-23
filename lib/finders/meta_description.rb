@@ -1,7 +1,7 @@
 module RichUrls
   module Finders
     module MetaDescription
-      def self.find(elem)
+      def self.call(elem)
         return unless elem.tag == :meta &&
                       elem.attributes[:property] == 'og:description'
 

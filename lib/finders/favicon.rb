@@ -3,7 +3,7 @@ module RichUrls
     module Favicon
       KEYWORDS = ['shortcut icon', 'icon shortcut', 'icon'].freeze
 
-      def self.find(elem)
+      def self.call(elem)
         return unless elem.tag == :link &&
                       KEYWORDS.include?(elem.attributes[:rel])
 
