@@ -112,11 +112,13 @@ module RichUrls
       !find(:meta, property: FALLBACK_ELEMENTS.fetch(tag))
     end
 
+    # Turns a set of filtered properties into a Hash where
+    # the default value is `nil`
     def filtered_properties(filter)
       keys = FINDERS.values.uniq
       keys &= filter if filter.any?
 
-      Hash[keys.zip([nil] * keys.length)]
+      Hash[keys.zip([])]
     end
   end
 end
