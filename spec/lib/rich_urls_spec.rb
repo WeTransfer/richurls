@@ -28,7 +28,6 @@ RSpec.describe RichUrls do
     expect(enriched).to_not have_key('favicon')
   end
 
-
   context '#config' do
     it 'sets a custom wrapper as the caching wrapper' do
       RichUrls.cache = RichUrls::Cache::RedisWrapper.new
