@@ -43,15 +43,11 @@ module RichUrls
 
     attr_reader :elements, :properties
 
-    def initialize
+    def initialize(filter = [])
+      @filter = filter
       @elements = []
       @counts = Set.new
-      @properties = {
-        'title' => nil,
-        'description' => nil,
-        'image' => nil,
-        'favicon' => nil
-      }
+      @properties = filtered_properties(filter)
     end
 
     def find(tag, attrs = {})
@@ -114,6 +110,13 @@ module RichUrls
       @counts.add(tag)
 
       !find(:meta, property: FALLBACK_ELEMENTS.fetch(tag))
+    end
+
+    def filtered_properties(filter)
+      keys = FINDERS.values.uniq
+      keys = keys & filter if filter.any?
+
+      Hash[keys.zip([nil] * keys.length)]
     end
   end
 end
