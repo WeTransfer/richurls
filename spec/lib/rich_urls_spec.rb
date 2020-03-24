@@ -17,8 +17,8 @@ RSpec.describe RichUrls do
     expect(enriched).to have_key('favicon')
   end
 
-  it 'enriches a url with some of its attributes' do
-    enriched = RichUrls.enrich('https://wetransfer.com', attributes: %w[title])
+  it 'enriches a url with a filter' do
+    enriched = RichUrls.enrich('https://wetransfer.com', filter: %w[title])
 
     expect(enriched).to have_key('title')
     expect(enriched).to_not have_key('description')
