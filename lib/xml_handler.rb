@@ -114,7 +114,7 @@ module RichUrls
 
     def filtered_properties(filter)
       keys = FINDERS.values.uniq
-      keys = keys & filter if filter.any?
+      keys &= filter if filter.any?
 
       Hash[keys.zip([nil] * keys.length)]
     end
