@@ -29,6 +29,18 @@ RSpec.describe RichUrls::UrlFetcher do
     expect(redis.get(key)).to_not be_empty
   end
 
+  it 'sets values to redis incl. attributes regardless of order' do
+    RichUrls::UrlFetcher.fetch(url, %w[title description])
+    key = Digest::MD5.hexdigest(url + 'description-title')
+
+    expect(redis.ttl(key)).to eq(3600)
+    sleep 1
+    expect(redis.ttl(key)).to eq(3599)
+
+    RichUrls::UrlFetcher.fetch(url, %w[description title])
+    expect(redis.ttl(key)).to eq(3600)
+  end
+
   it 'elongates the ttl if the redis key is called again' do
     RichUrls::UrlFetcher.fetch(url)
     key = Digest::MD5.hexdigest(url)

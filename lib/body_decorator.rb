@@ -20,15 +20,16 @@ module RichUrls
       'embed' => Parsers::EmbedParser
     }.freeze
 
-    def self.decorate(url, body)
-      new(url, body).decorate
+    def self.decorate(url, body, filter = [])
+      new(url, body, filter).decorate
     end
 
     private_class_method :new
 
-    def initialize(url, body)
+    def initialize(url, body, filter)
       @url = url
-      @xml = XMLHandler.new
+      @filter = filter
+      @xml = XMLHandler.new(filter)
 
       Ox.sax_html(@xml, StringIO.new(body))
 
@@ -40,9 +41,17 @@ module RichUrls
     end
 
     def decorate
-      PARSERS.each_with_object({}) do |(key, parser), object|
+      parsers.each_with_object({}) do |(key, parser), object|
         object[key] = parser.call(@xml.properties[key], @url)
       end
+    end
+
+    private
+
+    def parsers
+      return PARSERS if @filter.empty?
+
+      PARSERS.slice(*@filter)
     end
   end
 end

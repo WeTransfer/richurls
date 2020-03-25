@@ -6,14 +6,15 @@ module RichUrls
 
     class UrlFetcherError < StandardError; end
 
-    def self.fetch(url)
-      new(url).fetch
+    def self.fetch(url, attributes = [])
+      new(url, attributes).fetch
     end
 
     private_class_method :new
 
-    def initialize(url)
+    def initialize(url, attributes)
       @url = url
+      @attributes = attributes
     end
 
     def fetch
@@ -30,7 +31,7 @@ module RichUrls
     private
 
     def digest
-      @digest ||= Digest::MD5.hexdigest(@url)
+      @digest ||= Digest::MD5.hexdigest(@url + @attributes.sort.join('-'))
     end
 
     def patron_call
@@ -38,7 +39,9 @@ module RichUrls
       response = session.get(@url)
 
       if response.status < 400
-        decorated = BodyDecorator.decorate(response.url, response.body)
+        decorated = BodyDecorator.decorate(
+          response.url, response.body, @attributes
+        )
         RichUrls.cache.set(digest, Oj.dump(decorated))
         decorated
       else
