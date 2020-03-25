@@ -5,11 +5,11 @@ module RichUrls
         raise NotImplementedError, 'wrapper needs `get` method'
       end
 
-      def set(_key, _value)
+      def set(_key, _value, _time)
         raise NotImplementedError, 'wrapper needs `set` method'
       end
 
-      def extend(_key)
+      def extend(_key, _time)
         raise NotImplementedError, 'wrapper needs `extend` method'
       end
     end
@@ -17,9 +17,9 @@ module RichUrls
     class None < Wrapper
       def get(_); end
 
-      def set(_, _); end
+      def set(_, _, _); end
 
-      def extend(_); end
+      def extend(_, _); end
     end
   end
 end

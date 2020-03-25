@@ -6,22 +6,23 @@ module RichUrls
 
     class UrlFetcherError < StandardError; end
 
-    def self.fetch(url, attributes = [])
-      new(url, attributes).fetch
+    def self.fetch(url, attributes = [], cache_time = nil)
+      new(url, attributes, cache_time).fetch
     end
 
     private_class_method :new
 
-    def initialize(url, attributes)
+    def initialize(url, attributes, cache_time)
       @url = url
       @attributes = attributes
+      @cache_time = cache_time
     end
 
     def fetch
       cached = RichUrls.cache.get(digest)
 
       if cached
-        RichUrls.cache.extend(digest)
+        RichUrls.cache.extend(digest, @cache_time)
         Oj.load(cached)
       else
         patron_call
@@ -42,7 +43,7 @@ module RichUrls
         decorated = BodyDecorator.decorate(
           response.url, response.body, @attributes
         )
-        RichUrls.cache.set(digest, Oj.dump(decorated))
+        RichUrls.cache.set(digest, Oj.dump(decorated), @cache_time)
         decorated
       else
         raise UrlFetcherError, 'url cannot be found'

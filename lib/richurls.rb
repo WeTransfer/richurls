@@ -22,11 +22,11 @@ module RichUrls
     @cache ||= wrapper
   end
 
-  def self.enrich(url, filter: [])
+  def self.enrich(url, filter: [], cache_time: nil)
     unless URI::DEFAULT_PARSER.make_regexp.match?(url)
       raise MalformedURLError, "this url is malformed: #{url}"
     end
 
-    UrlFetcher.fetch(url, filter)
+    UrlFetcher.fetch(url, filter, cache_time)
   end
 end
