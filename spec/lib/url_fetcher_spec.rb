@@ -26,7 +26,38 @@ RSpec.describe RichUrls::UrlFetcher do
     RichUrls::UrlFetcher.fetch(url)
     key = Digest::MD5.hexdigest(url)
 
-    expect(redis.get(key)).to_not be_empty
+    expect(redis.get(key)).to_not be_nil
+  end
+
+  it 'sets the ttl to a custom time' do
+    RichUrls::UrlFetcher.fetch(url, [], 50)
+    key = Digest::MD5.hexdigest(url)
+
+    expect(redis.ttl(key)).to eq(50)
+    sleep 1
+    expect(redis.ttl(key)).to eq(49)
+
+    RichUrls::UrlFetcher.fetch(url, [], 90)
+    expect(redis.ttl(key)).to eq(90)
+  end
+
+  it 'does not cache' do
+    RichUrls::UrlFetcher.fetch(url, [], 0)
+    key = Digest::MD5.hexdigest(url)
+
+    expect(redis.get(key)).to be_nil
+  end
+
+  it 'invalidates a cache' do
+    RichUrls::UrlFetcher.fetch(url, [], 50)
+    key = Digest::MD5.hexdigest(url)
+
+    expect(redis.ttl(key)).to eq(50)
+    sleep 1
+    expect(redis.ttl(key)).to eq(49)
+
+    RichUrls::UrlFetcher.fetch(url, [], 0)
+    expect(redis.get(key)).to be_nil
   end
 
   it 'sets values to redis incl. attributes regardless of order' do
