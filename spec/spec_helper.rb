@@ -23,12 +23,16 @@ module RichUrls
         redis.get(key)
       end
 
-      def set(key, value, time = @time)
-        redis.set(key, value, ex: time)
+      def set(key, value, time)
+        return if time && time <= 0
+
+        redis.set(key, value, ex: time || @time)
       end
 
-      def extend(key, time = @time)
-        redis.expire(key, time)
+      def extend(key, time)
+        return if time && time < 0
+
+        redis.expire(key, time || @time)
       end
     end
   end
