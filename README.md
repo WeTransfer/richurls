@@ -72,7 +72,7 @@ Finally you can enable the `CustomCache` by adding:
 RichUrls.cache = CustomCache.new(time: 7200)
 ```
 
-**\* About custom cache time**
+**\* About custom cache time:**
 
 If you have caching enabled and would like to deviate from the default cache time
 per URL you enrich, it's possible to do so. You'd have to pass a `cache_time`
