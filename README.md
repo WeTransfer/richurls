@@ -9,6 +9,8 @@ gem install richurls
 
 **Usage:**
 
+Default usage:
+
 ```ruby
 require 'richurls'
 
@@ -22,6 +24,19 @@ RichUrls.enrich('https://wetransfer.com')
 #   "provider_display"=>"https://wetransfer.com",
 #   "favicon"=>"https://prod-cdn.wetransfer.net/assets/favicon-d12161435ace47c6883360e08466508593325f134c1852b1d0e6e75d5f76adda.ico",
 #   "embed"=>nil
+# }
+```
+
+Partial attributes:
+
+```ruby
+require 'richurls'
+
+RichUrls.enrich('https://wetransfer.com', filter: %w[title])
+
+# Returns:
+# {
+#   "title"=>"WeTransfer"
 # }
 ```
 
@@ -39,12 +54,14 @@ class CustomCache < RichUrls::Cache::Wrapper
     # Callback for fetching a cache entry
   end
 
-  def set(key, value)
-    # Callback for setting a value in a cache to a certain key
+  def set(key, value, time)
+    # Callback for setting a value in a cache to a certain key for a certain
+    # `time`*.
   end
 
-  def extend(key)
-    # Callback for extending a cached value by key
+  def extend(key, time)
+    # Callback for extending a cached value for a certain key for a certain
+    # `time`*.
   end
 end
 ```
@@ -52,5 +69,19 @@ end
 Finally you can enable the `CustomCache` by adding:
 
 ```ruby
-RichUrls.cache = CustomCache.new(time: 2.hours)
+RichUrls.cache = CustomCache.new(time: 7200)
 ```
+
+**\* About custom cache time:**
+
+If you have caching enabled and would like to deviate from the default cache time
+per URL you enrich, it's possible to do so. You'd have to pass a `cache_time`
+parameter to the URL enricher as such:
+
+```ruby
+RichUrls.enrich('https://wetransfer.com', cache_time: 3600)
+```
+
+This `cache_time` will be accessible through the `time` parameters in the `set`
+and `extend` methods on the `Cache::Wrapper`-instance and can be used as you
+please.
