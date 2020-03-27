@@ -66,6 +66,13 @@ RSpec.describe RichUrls::BodyDecorator do
       expect(result['description']).to eq('This is a description')
     end
 
+    it 'fetches no description for illegal HTML' do
+      file = File.binread('./spec/fixtures/closed_p_tag.html')
+      result = RichUrls::BodyDecorator.decorate(url, file)
+
+      expect(result['description']).to eq(nil)
+    end
+
     it 'fetches the correct description p-tag' do
       file = File.binread('./spec/fixtures/p_description.html')
       result = RichUrls::BodyDecorator.decorate(url, file)

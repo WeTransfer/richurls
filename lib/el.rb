@@ -31,7 +31,7 @@ module RichUrls
     end
 
     def text
-      @attributes[:text].strip
+      @attributes[:text]&.strip
     end
 
     def close!
