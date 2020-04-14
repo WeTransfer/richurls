@@ -7,7 +7,9 @@ module RichUrls
                  'frameborder="0" allowfullscreen></iframe>'.freeze
 
         def match?
-          @uri.host == 'pasteapp.com' && @uri.path =~ /\/p\/[a-zA-Z0-9]+/
+          @uri.host == 'pasteapp.com' &&
+            @uri.path =~ /\/p\/[a-zA-Z0-9]+/ &&
+            !@uri.query.nil?
         end
 
         def parse
