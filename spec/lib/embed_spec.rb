@@ -44,6 +44,14 @@ module RichUrls
         end
       end
 
+      context 'paste - no view arg' do
+        let(:url) { 'https://pasteapp.com/p/jbYfTeB8726' }
+
+        it 'fetches no embed result if the ?view param is missing' do
+          expect(result).to eq(nil)
+        end
+      end
+
       context 'spotify' do
         context 'a track' do
           let(:url) {
