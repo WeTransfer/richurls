@@ -39,4 +39,14 @@ RSpec.describe UrlHelper do
       'https://should_be_in_the_spec.com/test/test.jpg'
     )
   end
+
+  it 'should encode non-ascii characters' do
+    url = UrlHelper.url_for(
+      'https://should_be_in_the_spec.com', 'test-©.jpg'
+    )
+
+    expect(url).to eq(
+      'https://should_be_in_the_spec.com/test-%C2%A9.jpg'
+    )
+  end
 end
