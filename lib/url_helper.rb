@@ -1,3 +1,5 @@
+require 'addressable'
+
 module UrlHelper
   def self.url_for(domain, url)
     return if url.nil?
@@ -5,11 +7,12 @@ module UrlHelper
 
     domain_uri = URI(domain)
     base = domain_uri.scheme + '://' + domain_uri.host
+    escaped_url = Addressable::URI.escape(url)
 
     if url.start_with?('/')
-      base + url
+      base + escaped_url
     else
-      base + domain_uri.path + '/' + url
+      base + domain_uri.path + '/' + escaped_url
     end
   end
 
