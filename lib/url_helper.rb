@@ -3,6 +3,9 @@ require 'addressable'
 module UrlHelper
   def self.url_for(domain, url)
     return if url.nil?
+
+    # In some rare cases it appears to be that URL's are ending with a
+    # single whitespace character resulting in an invalid URL.
     url = url.strip
 
     return url if valid_url?(url)
