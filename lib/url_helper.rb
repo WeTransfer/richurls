@@ -3,6 +3,8 @@ require 'addressable'
 module UrlHelper
   def self.url_for(domain, url)
     return if url.nil?
+    url = url.strip
+
     return url if valid_url?(url)
 
     domain_uri = URI(domain)
