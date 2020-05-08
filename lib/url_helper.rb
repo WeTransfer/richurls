@@ -19,6 +19,12 @@ class UrlHelper
     return if @url.nil?
     return Addressable::URI.escape(@url) if valid_url?
 
+    build_url
+  end
+
+  private
+
+  def build_url
     domain_uri = URI(@domain)
     base = domain_uri.scheme + '://' + domain_uri.host
     escaped_url = Addressable::URI.escape(@url)
@@ -29,8 +35,6 @@ class UrlHelper
       base + domain_uri.path + '/' + escaped_url
     end
   end
-
-  private
 
   def valid_url?
     @url.start_with?('//') || @url =~ URI::DEFAULT_PARSER.make_regexp
