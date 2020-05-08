@@ -50,6 +50,17 @@ RSpec.describe UrlHelper do
     )
   end
 
+  describe 'should escape whitespaces' do
+    it 'escapes whitespace characters' do
+      url = UrlHelper.url_for(
+        'https://should_not_be_in_the_spec.com',
+        'https://test.com/abc\n  test.jpg'
+      )
+
+      expect(url).to eq('https://test.com/abc%5Cn%20%20test.jpg')
+    end
+  end
+
   describe 'should strip whitespace' do
     it 'when at the end of a relative url' do
       url = UrlHelper.url_for(

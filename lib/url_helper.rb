@@ -17,7 +17,7 @@ class UrlHelper
 
   def url
     return if @url.nil?
-    return @url if valid_url?
+    return Addressable::URI.escape(@url) if valid_url?
 
     domain_uri = URI(@domain)
     base = domain_uri.scheme + '://' + domain_uri.host
