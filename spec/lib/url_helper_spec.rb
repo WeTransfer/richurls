@@ -10,6 +10,11 @@ RSpec.describe UrlHelper do
     http://www.test.com/favicon.ico?q=22
   ].freeze
 
+  LIST_OF_INVALID_URLS = %w[
+    http:
+    https:
+  ].freeze
+
   LIST_OF_VALID_URLS.each do |url|
     it "can handle #{url}" do
       url_handler = UrlHelper.url_for(
@@ -17,6 +22,16 @@ RSpec.describe UrlHelper do
       )
 
       expect(url_handler).to eq(url)
+    end
+  end
+
+  LIST_OF_INVALID_URLS.each do |url|
+    it "returns nil for #{url}" do
+      url_handler = UrlHelper.url_for(
+        'https://should_not_be_in_the_spec.com', url
+      )
+
+      expect(url_handler).to eq(nil)
     end
   end
 
@@ -68,7 +83,7 @@ RSpec.describe UrlHelper do
       )
 
       expect(url).to eq(
-        'https://should_be_in_the_spec.com/test/test.jpg'
+        'https://should_be_in_the_spec.com/test/test.jpg%20'
       )
     end
 
@@ -79,7 +94,7 @@ RSpec.describe UrlHelper do
       )
 
       expect(url).to eq(
-        'https://should_be_in_the_spec.com/test/test.jpg'
+        'https://should_be_in_the_spec.com/test/test.jpg%20'
       )
     end
   end

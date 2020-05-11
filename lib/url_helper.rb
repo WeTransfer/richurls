@@ -9,34 +9,32 @@ class UrlHelper
 
   def initialize(domain, url)
     @domain = domain
-
-    # In some rare cases it appears to be that URL's are ending with a
-    # single whitespace character resulting in an invalid URL.
-    @url = url&.strip
+    @url = url
   end
 
   def url
     return if @url.nil?
-    return Addressable::URI.escape(@url) if valid_url?
 
-    build_url
+    parsed = Addressable::URI.parse(@url)
+    full_url = valid?(parsed) ? parsed.to_s : domain_uri
+    Addressable::URI.escape(full_url)
+  rescue Addressable::URI::InvalidURIError
   end
 
   private
 
-  def build_url
-    domain_uri = URI(@domain)
-    base = domain_uri.scheme + '://' + domain_uri.host
-    escaped_url = Addressable::URI.escape(@url)
-
-    if @url.start_with?('/')
-      base + escaped_url
-    else
-      base + domain_uri.path + '/' + escaped_url
-    end
+  def valid?(parsed)
+    parsed.host && (parsed.scheme || @url.start_with?('//'))
   end
 
-  def valid_url?
-    @url.start_with?('//') || @url =~ URI::DEFAULT_PARSER.make_regexp
+  def domain_uri
+    domain = Addressable::URI.parse(@domain)
+    domain.query = nil
+    domain.path = if @url.start_with?('/')
+                    @url
+                  else
+                    domain.path + '/' + @url
+                  end
+    domain.to_s
   end
 end
