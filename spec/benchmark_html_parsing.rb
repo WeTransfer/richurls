@@ -14,10 +14,7 @@ Ox.default_options = {
 }
 
 benchmark_cycles = {
-  'fixtures/wetransfer_static.html' =>
-    'WeTransfer',
-  'fixtures/youtube_video.html' =>
-    'My Indiana Jones Movies - Hilariocity Review - YouTube'
+  'fixtures/wetransfer.html' => 'WeTransfer'
 }
 
 benchmark_cycles.each_pair do |file_name, answer|
