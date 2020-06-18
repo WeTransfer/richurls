@@ -13,7 +13,7 @@ RSpec.describe RichUrls::UrlFetcher do
       200,
       0,
       "HTTP/2 200 OK\ndate: Mon, 13 Jan 2020 13:50:03 GMT",
-      File.read('./spec/fixtures/wetransfer.html')
+      File.read('./spec/fixtures/title_only.html')
     )
 
     expect_any_instance_of(Patron::Session).to receive(:get)
