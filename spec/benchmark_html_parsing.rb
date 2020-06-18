@@ -14,7 +14,7 @@ Ox.default_options = {
 }
 
 benchmark_cycles = {
-  'fixtures/wetransfer.html' => 'WeTransfer'
+  'fixtures/title_only.html' => 'This is a title'
 }
 
 benchmark_cycles.each_pair do |file_name, answer|
