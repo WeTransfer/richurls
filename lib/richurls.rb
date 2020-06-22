@@ -7,6 +7,7 @@ require_relative 'url_fetcher'
 require_relative 'body_decorator'
 
 module RichUrls
+  DEFAULT_USER_AGENT = 'richurls'.freeze
   class MalformedURLError < StandardError; end
 
   def self.cache
@@ -20,6 +21,14 @@ module RichUrls
     end
 
     @cache ||= wrapper
+  end
+
+  def self.user_agent=(user_agent)
+    @user_agent ||= user_agent
+  end
+
+  def self.user_agent
+    @user_agent || DEFAULT_USER_AGENT
   end
 
   def self.enrich(url, filter: [], cache_time: nil)
