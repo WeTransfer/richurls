@@ -42,11 +42,15 @@ RSpec.describe RichUrls do
     end
 
     it 'sets headesr' do
-      RichUrls.headers = {'User-Agent' => 'test user agent' }
-
-      expect(RichUrls.headers).to eq({
+      RichUrls.headers = {
         'User-Agent' => 'test user agent'
-      })
+      }
+
+      expect(RichUrls.headers).to eq(
+        {
+          'User-Agent' => 'test user agent'
+        }
+      )
     end
   end
 end
