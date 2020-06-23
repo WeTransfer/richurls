@@ -41,10 +41,12 @@ RSpec.describe RichUrls do
       expect(RichUrls.cache).to be_a(RichUrls::Cache::None)
     end
 
-    it 'sets a user agent' do
-      RichUrls.user_agent = 'test user agent'
+    it 'sets headesr' do
+      RichUrls.headers = {'User-Agent' => 'test user agent' }
 
-      expect(RichUrls.user_agent).to eq('test user agent')
+      expect(RichUrls.headers).to eq({
+        'User-Agent' => 'test user agent'
+      })
     end
   end
 end
