@@ -38,9 +38,7 @@ module RichUrls
     def patron_call
       session = Patron::Session.new(
         timeout: DEFAULT_TIMEOUT,
-        headers: {
-          'User-Agent' => RichUrls.user_agent
-        }
+        headers: RichUrls.headers
       )
 
       response = session.get(@url)
