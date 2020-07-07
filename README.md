@@ -1,4 +1,4 @@
-# richurls [![Build Status](https://travis-ci.com/WeTransfer/richurls.svg?branch=master)](https://travis-ci.com/WeTransfer/richurls)
+# richurls [![Build Status](https://travis-ci.com/WeTransfer/richurls.svg?branch=main)](https://travis-ci.com/WeTransfer/richurls)
 A gem which can enrich urls with speed.
 
 **Installation**
