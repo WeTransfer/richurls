@@ -94,8 +94,7 @@ like `Ferrum` feel free to do so. You can swap it by doing:
 
 ```ruby
 class CustomBrowser < RichUrls::Browser
-  def remote_call
-    # @url is the variable you have access to
+  def remote_call(url)
     # Please make sure to return the variables in the function as such:
     [status, redirected_url, body]
   end
