@@ -30,33 +30,33 @@ RSpec.describe RichUrls::UrlFetcher do
   end
 
   it 'sets the ttl to a custom time' do
-    RichUrls::UrlFetcher.fetch(url, [], RichUrls::PatronBrowser.new, 50)
+    RichUrls::UrlFetcher.fetch(url, [], cache_time: 50)
     key = Digest::MD5.hexdigest(url)
 
     expect(redis.ttl(key)).to eq(50)
     sleep 1
     expect(redis.ttl(key)).to eq(49)
 
-    RichUrls::UrlFetcher.fetch(url, [], RichUrls::PatronBrowser.new, 90)
+    RichUrls::UrlFetcher.fetch(url, [], cache_time: 90)
     expect(redis.ttl(key)).to eq(90)
   end
 
   it 'does not cache' do
-    RichUrls::UrlFetcher.fetch(url, [], RichUrls::PatronBrowser.new, 0)
+    RichUrls::UrlFetcher.fetch(url, [], cache_time: 0)
     key = Digest::MD5.hexdigest(url)
 
     expect(redis.get(key)).to be_nil
   end
 
   it 'invalidates a cache' do
-    RichUrls::UrlFetcher.fetch(url, [], RichUrls::PatronBrowser.new, 50)
+    RichUrls::UrlFetcher.fetch(url, [], cache_time: 50)
     key = Digest::MD5.hexdigest(url)
 
     expect(redis.ttl(key)).to eq(50)
     sleep 1
     expect(redis.ttl(key)).to eq(49)
 
-    RichUrls::UrlFetcher.fetch(url, [], RichUrls::PatronBrowser.new, 0)
+    RichUrls::UrlFetcher.fetch(url, [], cache_time: 0)
     expect(redis.get(key)).to be_nil
   end
 

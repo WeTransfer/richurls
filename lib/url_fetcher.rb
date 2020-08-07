@@ -9,8 +9,8 @@ module RichUrls
     def self.fetch(
       url,
       attributes = [],
-      browser = PatronBrowser.new,
-      cache_time = nil
+      browser: PatronBrowser.new,
+      cache_time: nil
     )
       new(url, attributes, browser, cache_time).fetch
     end

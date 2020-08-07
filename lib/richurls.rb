@@ -49,6 +49,6 @@ module RichUrls
       raise MalformedURLError, "this url is malformed: #{url}"
     end
 
-    UrlFetcher.fetch(url, filter, browser, cache_time)
+    UrlFetcher.fetch(url, filter, browser: browser, cache_time: cache_time)
   end
 end
