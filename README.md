@@ -101,5 +101,5 @@ class CustomBrowser < RichUrls::Browser
   end
 end
 
-RichUrls.browser = CustomBrowser
+RichUrls.browser = CustomBrowser.new
 ```

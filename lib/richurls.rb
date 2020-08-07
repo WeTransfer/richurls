@@ -15,11 +15,16 @@ module RichUrls
   end
 
   def self.browser=(browser)
+    unless browser.is_a? Browser
+      raise ArgumentError,
+            'browser needs to be of a RichUrls::Browser type'
+    end
+
     @browser ||= browser
   end
 
   def self.browser
-    @browser || PatronBrowser
+    @browser || PatronBrowser.new
   end
 
   def self.cache=(wrapper)
@@ -39,7 +44,7 @@ module RichUrls
     @headers || {}
   end
 
-  def self.enrich(url, filter: [], cache_time: nil, browser: PatronBrowser)
+  def self.enrich(url, filter: [], cache_time: nil)
     unless URI::DEFAULT_PARSER.make_regexp.match?(url)
       raise MalformedURLError, "this url is malformed: #{url}"
     end

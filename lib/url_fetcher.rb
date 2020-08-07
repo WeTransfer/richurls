@@ -6,7 +6,7 @@ module RichUrls
 
     class UrlFetcherError < StandardError; end
 
-    def self.fetch(url, attributes = [], wrapper = PatronBrowser, cache_time = nil)
+    def self.fetch(url, attributes = [], wrapper = PatronBrowser.new, cache_time = nil)
       new(url, attributes, wrapper, cache_time).fetch
     end
 
