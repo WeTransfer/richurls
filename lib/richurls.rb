@@ -5,12 +5,21 @@ require 'digest'
 require_relative 'cache'
 require_relative 'url_fetcher'
 require_relative 'body_decorator'
+require_relative 'patron_browser'
 
 module RichUrls
   class MalformedURLError < StandardError; end
 
   def self.cache
     @cache || Cache::None.new
+  end
+
+  def self.browser=(browser)
+    @browser ||= browser
+  end
+
+  def self.browser
+    @browser || PatronBrowser
   end
 
   def self.cache=(wrapper)
@@ -30,11 +39,11 @@ module RichUrls
     @headers || {}
   end
 
-  def self.enrich(url, filter: [], cache_time: nil)
+  def self.enrich(url, filter: [], cache_time: nil, browser: PatronBrowser)
     unless URI::DEFAULT_PARSER.make_regexp.match?(url)
       raise MalformedURLError, "this url is malformed: #{url}"
     end
 
-    UrlFetcher.fetch(url, filter, cache_time)
+    UrlFetcher.fetch(url, filter, browser, cache_time)
   end
 end
