@@ -4,7 +4,7 @@ module RichUrls
   DEFAULT_TIMEOUT = 10 # seconds
 
   class Browser
-    def remote_call(url)
+    def remote_call(_url)
       raise NotImplementedError,
             'subclasses of Browser need a remote_call method'
     end
