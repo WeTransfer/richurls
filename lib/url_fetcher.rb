@@ -6,15 +6,21 @@ module RichUrls
 
     class UrlFetcherError < StandardError; end
 
-    def self.fetch(url, attributes = [], cache_time = nil)
-      new(url, attributes, cache_time).fetch
+    def self.fetch(
+      url,
+      attributes = [],
+      browser: PatronBrowser.new,
+      cache_time: nil
+    )
+      new(url, attributes, browser, cache_time).fetch
     end
 
     private_class_method :new
 
-    def initialize(url, attributes, cache_time)
+    def initialize(url, attributes, browser, cache_time)
       @url = url
       @attributes = attributes
+      @browser = browser
       @cache_time = cache_time
     end
 
@@ -36,17 +42,10 @@ module RichUrls
     end
 
     def patron_call
-      session = Patron::Session.new(
-        timeout: DEFAULT_TIMEOUT,
-        headers: RichUrls.headers
-      )
+      status, return_url, body = @browser.remote_call(@url)
 
-      response = session.get(@url)
-
-      if response.status < 400
-        decorated = BodyDecorator.decorate(
-          response.url, response.body, @attributes
-        )
+      if status < 400
+        decorated = BodyDecorator.decorate(return_url, body, @attributes)
         RichUrls.cache.set(digest, Oj.dump(decorated), @cache_time)
         decorated
       else

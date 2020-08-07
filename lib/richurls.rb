@@ -5,12 +5,26 @@ require 'digest'
 require_relative 'cache'
 require_relative 'url_fetcher'
 require_relative 'body_decorator'
+require_relative 'patron_browser'
 
 module RichUrls
   class MalformedURLError < StandardError; end
 
   def self.cache
     @cache || Cache::None.new
+  end
+
+  def self.browser=(browser)
+    unless browser.is_a? Browser
+      raise ArgumentError,
+            'browser needs to be of a RichUrls::Browser type'
+    end
+
+    @browser ||= browser
+  end
+
+  def self.browser
+    @browser || PatronBrowser.new
   end
 
   def self.cache=(wrapper)
@@ -35,6 +49,6 @@ module RichUrls
       raise MalformedURLError, "this url is malformed: #{url}"
     end
 
-    UrlFetcher.fetch(url, filter, cache_time)
+    UrlFetcher.fetch(url, filter, browser: browser, cache_time: cache_time)
   end
 end

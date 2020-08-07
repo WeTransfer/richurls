@@ -85,3 +85,20 @@ RichUrls.enrich('https://wetransfer.com', cache_time: 3600)
 This `cache_time` will be accessible through the `time` parameters in the `set`
 and `extend` methods on the `Cache::Wrapper`-instance and can be used as you
 please.
+
+**Swapping browsers**
+
+The default browser is `curl` in the form of `Patron`. However if you feel
+like swapping to a different 'browser' like `HTTParty`, `RestClient` or something
+like `Ferrum` feel free to do so. You can swap it by doing:
+
+```ruby
+class CustomBrowser < RichUrls::Browser
+  def remote_call(url)
+    # Please make sure to return the variables in the function as such:
+    [status, redirected_url, body]
+  end
+end
+
+RichUrls.browser = CustomBrowser.new
+```
