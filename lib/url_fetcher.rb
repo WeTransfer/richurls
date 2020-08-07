@@ -9,18 +9,18 @@ module RichUrls
     def self.fetch(
       url,
       attributes = [],
-      wrapper = PatronBrowser.new,
+      browser = PatronBrowser.new,
       cache_time = nil
     )
-      new(url, attributes, wrapper, cache_time).fetch
+      new(url, attributes, browser, cache_time).fetch
     end
 
     private_class_method :new
 
-    def initialize(url, attributes, wrapper, cache_time)
+    def initialize(url, attributes, browser, cache_time)
       @url = url
       @attributes = attributes
-      @wrapper = wrapper
+      @browser = browser
       @cache_time = cache_time
     end
 
@@ -42,7 +42,7 @@ module RichUrls
     end
 
     def patron_call
-      status, return_url, body = @wrapper.remote_call(@url)
+      status, return_url, body = @browser.remote_call(@url)
 
       if status < 400
         decorated = BodyDecorator.decorate(return_url, body, @attributes)
