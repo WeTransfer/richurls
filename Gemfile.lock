@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    richurls (0.6.0)
+    richurls (0.6.1)
       addressable (~> 2)
       oj (~> 3)
       ox (~> 2)
@@ -14,13 +14,13 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
     diff-lcs (1.4.4)
-    oj (3.11.2)
+    oj (3.11.3)
     ox (2.14.2)
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
     patron (0.13.3)
-    public_suffix (4.0.5)
+    public_suffix (4.0.6)
     rainbow (3.0.0)
     redis (4.2.5)
     regexp_parser (2.1.1)
