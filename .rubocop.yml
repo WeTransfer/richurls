@@ -1,5 +1,6 @@
 AllCops:
   TargetRubyVersion: 2.7
+  NewCops: disable
 
 Lint/SuppressedException:
   Enabled: false
@@ -36,4 +37,6 @@ Style/HashTransformValues:
 Naming/MemoizedInstanceVariableName:
   Enabled: false
 Style/RegexpLiteral:
+  Enabled: false
+Style/IfUnlessModifier:
   Enabled: false
