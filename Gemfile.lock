@@ -14,7 +14,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
     diff-lcs (1.4.4)
-    oj (3.13.5)
+    oj (3.13.6)
     ox (2.14.5)
     parallel (1.20.1)
     parser (3.0.0.0)
