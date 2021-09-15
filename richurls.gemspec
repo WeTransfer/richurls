@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name = 'richurls'
-  spec.version = '0.6.1'
+  spec.version = '0.6.2'
   spec.authors = ['grdw']
   spec.email = ['gerard@wetransfer.com']
 
@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Service which enriches URLs fast and cheap'
   spec.homepage = 'https://github.com/wetransfer/richurls'
   spec.license = 'GPL-3.0'
-  spec.required_ruby_version = '~> 2.7'
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.7.0')
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/wetransfer/richurls'
