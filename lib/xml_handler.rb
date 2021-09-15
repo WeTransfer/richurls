@@ -1,3 +1,4 @@
+require 'set'
 require_relative 'el'
 require_relative 'finders'
 require_relative 'finders/meta_title'
