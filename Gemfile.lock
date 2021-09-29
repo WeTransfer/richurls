@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    richurls (0.6.2)
+    richurls (0.6.3)
       addressable (~> 2)
       oj (~> 3)
       ox (~> 2)
