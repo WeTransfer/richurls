@@ -6,7 +6,7 @@ rvm:
 services:
 - redis
 
-dist: xenial
+dist: bionic
 
 cache: bundler
 
